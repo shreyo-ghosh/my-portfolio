@@ -1,1 +1,28 @@
-body { font-family: sans-serif; background: #f9fafb; margin: 0; padding: 0; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for portfolio */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .service-card {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+  }
+  
+  .package-card {
+    @apply bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 hover:border-primary-300 transition-all duration-300;
+  }
+  
+  .price-tag {
+    @apply text-2xl font-bold text-primary-600;
+  }
+}
