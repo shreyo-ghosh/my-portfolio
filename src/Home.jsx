@@ -256,7 +256,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-20"
+        className="bg-primary-gradient text-white py-20"
       >
         <div className="max-w-6xl mx-auto px-6 text-center">
           <motion.h1 
@@ -281,13 +281,13 @@ export default function Home() {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <a href="mailto:contact@example.com" className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2">
-              <Mail size={20} />
-              Get Started
-            </a>
-            <a href="#services" className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition-colors duration-300">
-              View Services
-            </a>
+                                      <a href="mailto:contact@example.com" className="bg-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all flex items-center gap-2" style={{color: '#2563eb'}}>
+               <Mail size={20} />
+               Get Started
+             </a>
+             <a href="#services" className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white transition-all">
+               View Services
+             </a>
           </motion.div>
         </div>
       </motion.section>
@@ -362,7 +362,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: serviceIndex * 0.1, duration: 0.8 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8"
+                                 className="bg-gray-50 rounded-2xl p-8"
               >
                 <div className="flex items-center gap-4 mb-8">
                   <div className="text-4xl">{service.icon}</div>
@@ -400,9 +400,9 @@ export default function Home() {
                         ))}
                       </ul>
                       
-                      <button className="w-full mt-6 bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-300">
-                        Choose {pkg.name}
-                      </button>
+                                                                    <button className="w-full mt-6 py-3 rounded-lg font-semibold transition-all" style={{backgroundColor: '#2563eb', color: 'white'}}>
+                         Choose {pkg.name}
+                       </button>
                     </motion.div>
                   ))}
                 </div>
@@ -412,8 +412,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Retainer Options */}
-      <section className="py-20 bg-gradient-to-r from-primary-50 to-primary-100">
+             {/* Retainer Options */}
+       <section className="py-20 bg-primary-light">
         <div className="max-w-4xl mx-auto px-6">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -441,8 +441,8 @@ export default function Home() {
                 className="bg-white rounded-xl p-8 shadow-lg"
               >
                 <div className="text-center mb-6">
-                  <div className="text-2xl mb-2">
-                    {index === 0 ? <Clock className="mx-auto text-primary-600" size={48} /> : <Calendar className="mx-auto text-primary-600" size={48} />}
+                                     <div className="text-2xl mb-2">
+                     {index === 0 ? <Clock className="mx-auto" size={48} style={{color: '#2563eb'}} /> : <Calendar className="mx-auto" size={48} style={{color: '#2563eb'}} />}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-800 mb-2">
                     {option.type}
@@ -462,9 +462,9 @@ export default function Home() {
                   ))}
                 </ul>
                 
-                <button className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-300">
-                  Get Started
-                </button>
+                                                  <button className="w-full py-3 rounded-lg font-semibold transition-all" style={{backgroundColor: '#2563eb', color: 'white'}}>
+                   Get Started
+                 </button>
               </motion.div>
             ))}
           </div>
@@ -488,23 +488,23 @@ export default function Home() {
             </p>
             
             <div className="flex flex-wrap justify-center gap-6 mb-8">
-              <a href="mailto:contact@example.com" className="flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-300">
-                <Mail size={20} />
-                contact@example.com
-              </a>
-              <a href="tel:+1234567890" className="flex items-center gap-2 bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors duration-300">
-                <Phone size={20} />
-                +1 (234) 567-890
-              </a>
+                                            <a href="mailto:contact@example.com" className="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all" style={{backgroundColor: '#2563eb', color: 'white'}}>
+                 <Mail size={20} />
+                 contact@example.com
+               </a>
+               <a href="tel:+1234567890" className="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all" style={{backgroundColor: '#374151', color: 'white'}}>
+                 <Phone size={20} />
+                 +1 (234) 567-890
+               </a>
             </div>
             
             <div className="flex justify-center gap-4">
-              <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">
-                <Linkedin size={24} />
-              </a>
-              <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-300">
-                <Github size={24} />
-              </a>
+                                            <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-all">
+                 <Linkedin size={24} />
+               </a>
+                              <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-400 transition-all">
+                 <Github size={24} />
+               </a>
             </div>
           </motion.div>
         </div>
