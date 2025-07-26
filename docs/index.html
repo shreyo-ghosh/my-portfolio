@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Services Portfolio - Redirecting...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 IT Services Portfolio</h1>
+        <p>Setting up GitHub Pages deployment...</p>
+        <div class="loading"></div>
+        <p style="margin-top: 2rem;">
+            If you're seeing this page, GitHub Pages needs to be enabled.<br>
+            <strong>Expected URL:</strong> https://shreyo-ghosh.github.io/my-portfolio/
+        </p>
+        <a href="https://github.com/shreyo-ghosh/my-portfolio/blob/main/GITHUB_PAGES_SETUP.md" class="btn" target="_blank">
+            View Setup Instructions
+        </a>
+        
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2);">
+            <h3>Portfolio Includes:</h3>
+            <ul style="text-align: left; display: inline-block;">
+                <li>💻 Remote IT Support & Troubleshooting</li>
+                <li>☁️ Cloud Setup & Optimization</li>
+                <li>⚙️ DevOps & Automation</li>
+                <li>📊 Database Services</li>
+                <li>🔐 Security Hardening & Monitoring</li>
+                <li>🌍 Website/Application Deployment</li>
+                <li>📘 Technical Writing & Documentation</li>
+                <li>🔁 ERP/SaaS/API Integration</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Auto-redirect if the main deployment is working
+        setTimeout(() => {
+            fetch('https://shreyo-ghosh.github.io/my-portfolio/')
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = 'https://shreyo-ghosh.github.io/my-portfolio/';
+                    }
+                })
+                .catch(() => {
+                    console.log('Main deployment not ready yet');
+                });
+        }, 3000);
+    </script>
+</body>
+</html>
