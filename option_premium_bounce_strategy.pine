@@ -1,0 +1,107 @@
+//@version=5
+strategy("Option Premium Bounce Strategy [With Arrows & Filters]", overlay=true, default_qty_type=strategy.percent_of_equity, default_qty_value=100)
+
+// === INPUT PARAMETERS ===
+supportLen        = input.int(50, title="Support Length")
+rsiLen            = input.int(14, title="RSI Length")
+volLen            = input.int(20, title="Volume MA Length")
+rsithreshLow      = input.float(30, title="RSI Oversold Level")
+rsithreshHi       = input.float(40, title="RSI Confirmation Level")
+volMult           = input.float(1.5, title="Volume Spike Multiplier")
+cooldownBars      = input.int(20, title="Cooldown Bars")
+riskMultiplierTP1 = input.float(1.0, title="TP1 Risk Multiplier")
+riskMultiplierTP2 = input.float(3.0, title="TP2 Risk Multiplier")
+atrMultSL         = input.float(0.5, title="ATR Multiplier for Stop Loss")
+minTargetNifty    = input.float(30, title="Minimum TP1 for NIFTY")
+minTargetSensex   = input.float(100, title="Minimum TP1 for SENSEX")
+supportZoneLookback = input.int(300, title="Support Zone Lookback Period")
+
+// === CALCULATIONS ===
+resistanceLookback = input.int(200, title="Resistance Lookback Period")
+support            = ta.lowest(close, supportLen)
+rsi                = ta.rsi(close, rsiLen)
+volAvg             = ta.sma(volume, volLen)
+volSpike           = volume > (volAvg * volMult)
+atr                = ta.atr(14)
+
+// === CANDLE PATTERNS ===
+isBullishEngulfing = close > open and open[1] > close[1] and close > open[1] and open < close[1]
+isHammer = (high - low) > 3 * math.abs(open - close) and (close - low) / (high - low + 0.001) > 0.6 and (open - low) / (high - low + 0.001) > 0.6
+reversalCandle = isBullishEngulfing or isHammer
+
+// === DYNAMIC SUPPORT ZONES BASED ON CONSOLIDATION ===
+support1 = ta.lowest(close, supportZoneLookback)
+support2 = ta.lowest(close, supportZoneLookback * 2)
+supportZoneTouched = close <= support1 and close >= support2
+
+// === ENTRY FILTERS ===
+rsiCondition    = rsi < rsithreshLow and rsi > rsithreshHi
+supportTouched  = supportZoneTouched or close <= support
+risk            = close - support
+lastHighResistance = ta.highest(close, resistanceLookback)
+tp1 = lastHighResistance
+tp2 = ta.highest(close, resistanceLookback * 2)
+stopLoss = ta.lowest(low, resistanceLookback) - (atr * atrMultSL)
+
+// === SYMBOL-BASED FILTER ===
+isNifty  = str.contains(syminfo.ticker, "NIFTY")
+isSensex = str.contains(syminfo.ticker, "SENSEX")
+targetCondition = (isNifty and (tp1 - close >= minTargetNifty)) or (isSensex and (tp1 - close >= minTargetSensex)) or (not isNifty and not isSensex)
+
+// === VOLUME-BASED BUY/SELL SUGGESTION ===
+buyVolumeSignal = volume > volAvg and close > open
+sellVolumeSignal = volume > volAvg and close < open
+
+// === OPTION SELLER RATIO DISPLAY ===
+// Proxy logic: Assume sellers dominate on red candles with high volume
+optionSellerRatio = sellVolumeSignal ? 1 : 0
+sellerRatioMA = ta.sma(optionSellerRatio, 10) * 100
+
+// Display label on chart every 2 minutes
+var label sellerLabel = na
+if (time % 120000 == 0)
+    label.delete(sellerLabel)
+    sellerLabel := label.new(x=bar_index, y=high, text="Seller Ratio: " + str.tostring(sellerRatioMA, '#.##') + "%", style=label.style_label_left, textcolor=color.white, size=size.small, color=color.navy)
+
+// === FINAL ENTRY SIGNAL ===
+entrySignal = reversalCandle and supportTouched and rsiCondition and volSpike and targetCondition
+
+// === COOLDOWN LOGIC ===
+var int lastTradeBar = na
+cooldownOK = na(lastTradeBar) or (bar_index - lastTradeBar >= cooldownBars)
+
+// === BACKGROUND COLOR ALERT ===
+bgcolor(sellerRatioMA > 70 ? color.new(color.red, 85) : na, title="High Seller Pressure")
+bgcolor(sellerRatioMA < 30 ? color.new(color.green, 85) : na, title="Low Seller Pressure")
+
+plotshape(buyVolumeSignal and cooldownOK, title="Volume BUY", location=location.belowbar, style=shape.labelup, color=color.lime, text="VOL BUY", textcolor=color.black)
+plotshape(sellVolumeSignal and cooldownOK, title="Volume SELL", location=location.abovebar, style=shape.labeldown, color=color.red, text="VOL SELL", textcolor=color.white)
+
+// === STRATEGY EXECUTION ===
+if entrySignal and cooldownOK and strategy.opentrades == 0
+    strategy.entry("Long Entry", strategy.long)
+    lastTradeBar := bar_index
+
+strategy.exit("TP1 / SL", from_entry="Long Entry", limit=tp1, stop=stopLoss)
+
+// === BUY/SELL ZONE BACKGROUND ===
+buyZone = entrySignal and cooldownOK and sellerRatioMA < 30
+sellZone = sellVolumeSignal and sellerRatioMA > 70
+bgcolor(buyZone ? color.new(color.green, 90) : na, title="Buy Zone")
+bgcolor(sellZone ? color.new(color.red, 90) : na, title="Sell Zone")
+
+// === VISUALS ===
+plot(lastHighResistance, title="Dynamic Resistance", color=color.fuchsia, linewidth=1, style=plot.style_line)
+plot(support, title="Support", color=color.green, linewidth=1)
+plot(tp1, title="Target 1", color=color.blue, linewidth=1)
+plot(tp2, title="Target 2", color=color.orange, linewidth=1)
+plot(stopLoss, title="Stop Loss", color=color.red, linewidth=1)
+
+plot(support1, title="Support Zone Top", color=color.teal, linewidth=1)
+plot(support2, title="Support Zone Bottom", color=color.maroon, linewidth=1)
+
+// === ARROWS ===
+plotshape(entrySignal and cooldownOK and not na(close), title="Buy Signal Marker", location=location.belowbar, style=shape.labelup, size=size.normal, text="BUY", color=color.green, textcolor=color.white)
+plotshape(entrySignal and cooldownOK, title="BUY Arrow", location=location.belowbar, style=shape.arrowup, color=color.green, size=size.small, text="BUY")
+targetHit = close >= tp1 and strategy.opentrades == 0
+plotshape(targetHit, title="TP1 Arrow", location=location.abovebar, style=shape.arrowdown, color=color.blue, size=size.tiny, text="🎯")
