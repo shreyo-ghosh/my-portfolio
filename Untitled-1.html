@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpiritualYatra.com - Varanasi Tourism | The Spiritual Heart of India</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%);
+        }
+        
+        .ganga-gradient {
+            background: linear-gradient(180deg, #4a90e2 0%, #7b68ee 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-playfair font-bold text-orange-600">🕉️ SpiritualYatra.com</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-orange-600 transition-colors">Home</a>
+                    <a href="#attractions" class="text-gray-700 hover:text-orange-600 transition-colors">Attractions</a>
+                    <a href="#experiences" class="text-gray-700 hover:text-orange-600 transition-colors">Experiences</a>
+                    <a href="#culture" class="text-gray-700 hover:text-orange-600 transition-colors">Culture</a>
+                    <a href="#contact" class="text-gray-700 hover:text-orange-600 transition-colors">Contact</a>
+                </div>
+                <button class="md:hidden text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <div class="floating mb-8">
+                <span class="text-8xl">🛕</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-playfair font-bold mb-6">
+                Welcome to Varanasi
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 font-light">
+                The Eternal City • Kashi • Banaras
+            </p>
+            <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+                Experience the spiritual heart of India, where ancient traditions meet the sacred Ganges. 
+                Discover 3000 years of continuous civilization in the world's oldest living city.
+            </p>
+            <button onclick="scrollToSection('attractions')" class="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
+                Explore Sacred Varanasi
+            </button>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 text-4xl floating" style="animation-delay: 0.5s;">🪔</div>
+        <div class="absolute top-40 right-20 text-3xl floating" style="animation-delay: 1s;">🕉️</div>
+        <div class="absolute bottom-32 left-20 text-3xl floating" style="animation-delay: 1.5s;">🛶</div>
+    </section>
+
+    <!-- Key Attractions -->
+    <section id="attractions" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-gray-800 mb-4">Sacred Attractions</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Discover the most revered sites that make Varanasi the spiritual capital of India</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dashashwamedh Ghat -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden fade-in">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1561361513-2d000a50f0dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Dashashwamedh Ghat evening aarti ceremony" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-3">Dashashwamedh Ghat</h3>
+                        <p class="text-gray-600 mb-4">The most famous ghat where the spectacular Ganga Aarti ceremony takes place every evening, drawing thousands of devotees and visitors.</p>
+                        <div class="flex items-center text-orange-600">
+                            <span class="mr-2">🕕</span>
+                            <span class="text-sm">Evening Aarti: 6:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kashi Vishwanath Temple -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden fade-in">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Kashi Vishwanath Temple golden spires" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-3">Kashi Vishwanath Temple</h3>
+                        <p class="text-gray-600 mb-4">One of the twelve Jyotirlingas, this golden temple dedicated to Lord Shiva is the most sacred shrine in Varanasi.</p>
+                        <div class="flex items-center text-orange-600">
+                            <span class="mr-2">⏰</span>
+                            <span class="text-sm">Open: 4:00 AM - 11:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sarnath -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden fade-in">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Sarnath Buddhist stupa and ruins" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-3">Sarnath</h3>
+                        <p class="text-gray-600 mb-4">The deer park where Buddha gave his first sermon after enlightenment. A UNESCO World Heritage site with ancient stupas and monasteries.</p>
+                        <div class="flex items-center text-orange-600">
+                            <span class="mr-2">📍</span>
+                            <span class="text-sm">10 km from Varanasi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manikarnika Ghat -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden fade-in">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Manikarnika Ghat ancient steps and buildings" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-3">Manikarnika Ghat</h3>
+                        <p class="text-gray-600 mb-4">The main cremation ghat where Hindus believe cremation leads to moksha (liberation from the cycle of rebirth).</p>
+                        <div class="flex items-center text-orange-600">
+                            <span class="mr-2">🕉️</span>
+                            <span class="text-sm">Sacred cremation site</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assi Ghat -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden fade-in">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Assi Ghat sunrise over Ganges river" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-3">Assi Ghat</h3>
+                        <p class="text-gray-600 mb-4">A peaceful ghat popular with pilgrims and tourists, perfect for morning boat rides and witnessing beautiful sunrises over the Ganges.</p>
+                        <div class="flex items-center text-orange-600">
+                            <span class="mr-2">🛶</span>
+                            <span class="text-sm">Best for sunrise views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banaras Hindu University -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden fade-in">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Banaras Hindu University campus architecture" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-3">Banaras Hindu University</h3>
+                        <p class="text-gray-600 mb-4">One of India's largest residential universities, home to the beautiful Vishwanath Temple and sprawling campus with rich academic heritage.</p>
+                        <div class="flex items-center text-orange-600">
+                            <span class="mr-2">📚</span>
+                            <span class="text-sm">Est. 1916</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Complete Tourist Attractions List -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-gray-800 mb-4">Complete Tourist Attractions</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Explore all the sacred sites, cultural landmarks, and hidden gems of Varanasi</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Religious Sites -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-orange-600 mb-4 flex items-center">
+                        <span class="mr-2">🛕</span> Religious Sites
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Kashi Vishwanath Temple</li>
+                        <li>• Sankat Mochan Hanuman Temple</li>
+                        <li>• Durga Temple (Monkey Temple)</li>
+                        <li>• Tulsi Manas Temple</li>
+                        <li>• Bharat Mata Temple</li>
+                        <li>• Kaal Bhairav Temple</li>
+                        <li>• Annapurna Temple</li>
+                        <li>• Vishalakshi Temple</li>
+                        <li>• New Vishwanath Temple (BHU)</li>
+                        <li>• Mrityunjay Mahadev Temple</li>
+                    </ul>
+                </div>
+
+                <!-- Sacred Ghats -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-blue-600 mb-4 flex items-center">
+                        <span class="mr-2">🌊</span> Sacred Ghats
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Dashashwamedh Ghat</li>
+                        <li>• Manikarnika Ghat</li>
+                        <li>• Assi Ghat</li>
+                        <li>• Harishchandra Ghat</li>
+                        <li>• Chet Singh Ghat</li>
+                        <li>• Darbhanga Ghat</li>
+                        <li>• Man Mandir Ghat</li>
+                        <li>• Ahilyabai Ghat</li>
+                        <li>• Shivala Ghat</li>
+                        <li>• Kedar Ghat</li>
+                    </ul>
+                </div>
+
+                <!-- Historical & Cultural -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-purple-600 mb-4 flex items-center">
+                        <span class="mr-2">🏛️</span> Historical Sites
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Sarnath Archaeological Site</li>
+                        <li>• Ramnagar Fort & Museum</li>
+                        <li>• Banaras Hindu University</li>
+                        <li>• Alamgir Mosque</li>
+                        <li>• Chunar Fort</li>
+                        <li>• Archaeological Museum</li>
+                        <li>• Bharat Kala Bhavan</li>
+                        <li>• Central University of Tibetan Studies</li>
+                        <li>• Gyanvapi Mosque</li>
+                        <li>• Jantar Mantar</li>
+                    </ul>
+                </div>
+
+                <!-- Markets & Shopping -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-green-600 mb-4 flex items-center">
+                        <span class="mr-2">🛍️</span> Markets & Shopping
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Vishwanath Gali</li>
+                        <li>• Thatheri Bazaar</li>
+                        <li>• Godowlia Market</li>
+                        <li>• Chowk Area</li>
+                        <li>• Lahurabir Market</li>
+                        <li>• Banarasi Silk Shops</li>
+                        <li>• Kachori Gali</li>
+                        <li>• Lanka Market</li>
+                        <li>• Sigra Market</li>
+                        <li>• Maidagin Market</li>
+                    </ul>
+                </div>
+
+                <!-- Gardens & Parks -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-teal-600 mb-4 flex items-center">
+                        <span class="mr-2">🌳</span> Gardens & Parks
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Deer Park, Sarnath</li>
+                        <li>• Kamachha Park</li>
+                        <li>• Rajghat Park</li>
+                        <li>• Malviya Park</li>
+                        <li>• Botanical Garden (BHU)</li>
+                        <li>• Nagwa Park</li>
+                        <li>• Shivpur Park</li>
+                        <li>• Cantonment Gardens</li>
+                    </ul>
+                </div>
+
+                <!-- Educational Institutions -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-indigo-600 mb-4 flex items-center">
+                        <span class="mr-2">📚</span> Educational Sites
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Banaras Hindu University</li>
+                        <li>• Sampurnanand Sanskrit University</li>
+                        <li>• Mahatma Gandhi Kashi Vidyapith</li>
+                        <li>• Central Institute of Higher Tibetan Studies</li>
+                        <li>• Udai Pratap College</li>
+                        <li>• Sanskrit College</li>
+                        <li>• Vasanta College for Women</li>
+                        <li>• DAV College</li>
+                    </ul>
+                </div>
+
+                <!-- Food & Cuisine -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-red-600 mb-4 flex items-center">
+                        <span class="mr-2">🍽️</span> Famous Food Spots
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Kachori Gali</li>
+                        <li>• Blue Lassi Shop</li>
+                        <li>• Deena Chaat Bhandar</li>
+                        <li>• Ram Bhandar</li>
+                        <li>• Ksheer Sagar</li>
+                        <li>• Baati Chokha Shops</li>
+                        <li>• Thandai Shops</li>
+                        <li>• Malaiyo Vendors</li>
+                        <li>• Banarasi Paan Shops</li>
+                        <li>• Street Food at Godowlia</li>
+                    </ul>
+                </div>
+
+                <!-- Nearby Attractions -->
+                <div class="bg-white rounded-xl p-6 shadow-lg fade-in">
+                    <h3 class="text-xl font-playfair font-bold text-yellow-600 mb-4 flex items-center">
+                        <span class="mr-2">🗺️</span> Nearby Attractions
+                    </h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• Sarnath (10 km)</li>
+                        <li>• Chunar Fort (40 km)</li>
+                        <li>• Vindhyachal (70 km)</li>
+                        <li>• Allahabad/Prayagraj (120 km)</li>
+                        <li>• Bodhgaya (250 km)</li>
+                        <li>• Ayodhya (200 km)</li>
+                        <li>• Chitrakoot (180 km)</li>
+                        <li>• Kushinagar (270 km)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Special Experiences -->
+            <div class="mt-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl p-8 text-white fade-in">
+                <h3 class="text-3xl font-playfair font-bold text-center mb-8">Special Spiritual Experiences</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <span class="text-4xl mb-4 block">🛶</span>
+                        <h4 class="text-xl font-bold mb-2">Sunrise Boat Ride</h4>
+                        <p>Experience the magical sunrise over the Ganges with morning prayers and rituals</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl mb-4 block">🪔</span>
+                        <h4 class="text-xl font-bold mb-2">Ganga Aarti</h4>
+                        <p>Witness the mesmerizing evening prayer ceremony at Dashashwamedh Ghat</p>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl mb-4 block">🧘</span>
+                        <h4 class="text-xl font-bold mb-2">Meditation & Yoga</h4>
+                        <p>Join spiritual sessions and yoga classes along the peaceful ghats</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiences -->
+    <section id="experiences" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-gray-800 mb-4">Spiritual Experiences</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Immerse yourself in the timeless traditions and sacred rituals of Varanasi</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="text-center mb-6">
+                            <span class="text-6xl">🛶</span>
+                        </div>
+                        <h3 class="text-3xl font-playfair font-bold text-gray-800 mb-4 text-center">Sunrise Boat Ride</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                            Experience the magic of Varanasi from the sacred waters of the Ganges. Watch the city wake up as pilgrims perform their morning rituals, and witness the golden sunrise painting the ancient ghats in ethereal light.
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <span class="text-orange-600 mr-3">⏰</span>
+                                <span>Best time: 5:30 AM - 7:00 AM</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-orange-600 mr-3">💰</span>
+                                <span>Cost: ₹200-500 per person</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-orange-600 mr-3">📍</span>
+                                <span>Starting point: Dashashwamedh Ghat</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="text-center mb-6">
+                            <span class="text-6xl">🪔</span>
+                        </div>
+                        <h3 class="text-3xl font-playfair font-bold text-gray-800 mb-4 text-center">Ganga Aarti Ceremony</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                            Witness the mesmerizing evening prayer ceremony where priests perform synchronized rituals with fire, incense, and chanting. This daily spectacle draws thousands of devotees and creates an unforgettable spiritual atmosphere.
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <span class="text-orange-600 mr-3">⏰</span>
+                                <span>Daily: 6:30 PM - 7:30 PM</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-orange-600 mr-3">🎭</span>
+                                <span>Duration: 45 minutes</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-orange-600 mr-3">📍</span>
+                                <span>Location: Dashashwamedh Ghat</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Culture & Heritage -->
+    <section id="culture" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-gray-800 mb-4">Rich Cultural Heritage</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Discover the arts, crafts, and traditions that have flourished for millennia</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center fade-in">
+                    <div class="bg-gradient-to-br from-pink-400 to-red-500 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">🎵</span>
+                    </div>
+                    <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-4">Classical Music</h3>
+                    <p class="text-gray-600">Varanasi is the birthplace of many legendary musicians and continues to be a center for Indian classical music and dance.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="bg-gradient-to-br from-yellow-400 to-orange-500 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">🧵</span>
+                    </div>
+                    <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-4">Banarasi Silk</h3>
+                    <p class="text-gray-600">World-famous silk weaving tradition producing exquisite sarees and fabrics with intricate gold and silver brocade work.</p>
+                </div>
+                
+                <div class="text-center fade-in">
+                    <div class="bg-gradient-to-br from-green-400 to-teal-500 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-4xl">📚</span>
+                    </div>
+                    <h3 class="text-2xl font-playfair font-bold text-gray-800 mb-4">Ancient Learning</h3>
+                    <p class="text-gray-600">A center of learning for over 2000 years, home to scholars, philosophers, and spiritual teachers from across the world.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Visit Info -->
+    <section id="contact" class="py-20 hero-gradient text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="fade-in">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold mb-8">Plan Your Sacred Journey</h2>
+                <p class="text-xl mb-12 leading-relaxed">
+                    Ready to experience the spiritual magic of Varanasi? Let us help you plan an unforgettable journey to the eternal city.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-2xl font-playfair font-bold mb-4">🛫 Getting Here</h3>
+                        <div class="space-y-2 text-left">
+                            <p><strong>By Air:</strong> Lal Bahadur Shastri Airport (25 km)</p>
+                            <p><strong>By Train:</strong> Varanasi Junction Railway Station</p>
+                            <p><strong>By Road:</strong> Well connected to major cities</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-2xl font-playfair font-bold mb-4">🏨 Best Time to Visit</h3>
+                        <div class="space-y-2 text-left">
+                            <p><strong>October - March:</strong> Pleasant weather</p>
+                            <p><strong>Festivals:</strong> Diwali, Holi, Dev Deepawali</p>
+                            <p><strong>Avoid:</strong> Monsoon season (July-September)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white bg-opacity-10 rounded-2xl p-8 backdrop-blur-sm">
+                    <h3 class="text-2xl font-playfair font-bold mb-6">Contact Tourism Office</h3>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div>
+                            <span class="text-3xl mb-2 block">📞</span>
+                            <p>+91-542-2506638</p>
+                        </div>
+                        <div>
+                            <span class="text-3xl mb-2 block">✉️</span>
+                            <p>info@varanasitourism.gov.in</p>
+                        </div>
+                        <div>
+                            <span class="text-3xl mb-2 block">🌐</span>
+                            <p>www.uptourism.gov.in</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-8">
+                <span class="text-3xl font-playfair font-bold">🕉️ SpiritualYatra.com</span>
+            </div>
+            <p class="text-gray-400 mb-6">Experience the eternal city where spirituality meets tradition</p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <span class="text-2xl cursor-pointer hover:text-orange-400 transition-colors">📘</span>
+                <span class="text-2xl cursor-pointer hover:text-orange-400 transition-colors">📷</span>
+                <span class="text-2xl cursor-pointer hover:text-orange-400 transition-colors">🐦</span>
+                <span class="text-2xl cursor-pointer hover:text-orange-400 transition-colors">📺</span>
+            </div>
+            <p class="text-gray-500 text-sm">© 2024 Varanasi Tourism. All rights reserved. | A journey through 3000 years of continuous civilization.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling function
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Add click handlers to navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+                this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            });
+        });
+
+        // Mobile menu toggle (basic implementation)
+        const mobileMenuButton = document.querySelector('nav button');
+        const navLinks = document.querySelector('nav .hidden');
+        
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', function() {
+                navLinks.classList.toggle('hidden');
+            });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a670e7e610180c',t:'MTc1NDM5ODQ0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
