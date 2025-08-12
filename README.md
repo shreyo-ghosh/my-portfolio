@@ -182,10 +182,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions about this portfolio or to discuss IT services:
 
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
-- **Phone**: [+1 (234) 567-890](tel:+1234567890)
-- **LinkedIn**: [Your Profile](https://linkedin.com/in/yourprofile)
-- **GitHub**: [Your Profile](https://github.com/yourprofile)
+- **Email**: [launchlayer.techh@gmail.comm](mailto:your-email@example.com)
+- **Phone**: [+91 98310 14716](tel:+1234567890)
 
 ---
 
