@@ -751,10 +751,18 @@ class ChatbotAI {
     this.serviceInterests = new Set();
     this.budgetRange = null;
     this.timeline = null;
+    this.contactCaptured = !!this.userPreferences.email;
+    
+    // Contact capture questions (asked first for lead generation)
+    this.contactQuestions = [
+      { text: "Hi! 👋 I'm the LaunchLayer Assistant. To get started, what's your name?", type: "openended", key: "name", placeholder: "Your full name" },
+      { text: "Great! What's your email address?", type: "email", key: "email", placeholder: "your@email.com" },
+      { text: "And your phone number?", type: "phone", key: "phone", placeholder: "+1 (555) 123-4567" }
+    ];
     
     // Smart question progression based on learning
     this.baseQuestions = [
-      { text: "Hi! 👋 What's your primary business need?", type: "openended", key: "need" },
+      { text: "Perfect! Now let's find the right services for you. What's your primary business need?", type: "openended", key: "need" },
       { text: "Thanks for sharing. Which of these areas interests you most?", type: "quick_reply", options: ["IT & Cloud", "AI & Data", "Development", "Marketing", "All Services"], key: "interest" },
       { text: "What's your timeline for this project?", type: "quick_reply", options: ["ASAP (1-2 weeks)", "This month", "Next quarter", "Flexible"], key: "timeline" },
       { text: "What's your budget range?", type: "quick_reply", options: ["Under $500", "$500-2000", "$2000-10000", "$10000+"], key: "budget" },
@@ -773,22 +781,35 @@ class ChatbotAI {
   }
 
   getSmartQuestion() {
-    // Generate contextually better questions based on what we've learned
+    // First, capture contact information
+    if (!this.contactCaptured) {
+      const contactIndex = Math.min(this.questionIndex, this.contactQuestions.length - 1);
+      const q = this.contactQuestions[contactIndex];
+      
+      if (this.questionIndex >= this.contactQuestions.length) {
+        this.contactCaptured = true;
+      }
+      
+      return q;
+    }
+    
+    // Then, generate contextually better questions based on what we've learned
     if (this.userPreferences.interest) {
-      if (this.questionIndex === 2) {
+      if (this.questionIndex === this.contactQuestions.length + 2) {
         return { text: `Got it—you're interested in ${this.userPreferences.interest}. How urgent is this for you?`, type: "quick_reply", options: ["Urgent - Start ASAP", "1-2 months", "Planning phase"], key: "urgency" };
       }
     }
     
     if (this.userPreferences.challenge) {
-      if (this.questionIndex === 4) {
+      if (this.questionIndex === this.contactQuestions.length + 4) {
         return { text: `I see you're dealing with ${this.userPreferences.challenge.substring(0, 40)}... Have you explored solutions yet?`, type: "quick_reply", options: ["Yes, looking for better", "No, first time", "In progress"], key: "explored" };
       }
     }
 
     // Return base question or smart variation
-    if (this.questionIndex < this.baseQuestions.length) {
-      return this.baseQuestions[this.questionIndex];
+    const baseIndex = this.questionIndex - this.contactQuestions.length;
+    if (baseIndex < this.baseQuestions.length) {
+      return this.baseQuestions[baseIndex];
     }
 
     return { text: "Would you like us to reach out with a custom proposal?", type: "quick_reply", options: ["Yes, contact me", "Email me details first", "Not right now"], key: "contact_intent" };
@@ -798,8 +819,18 @@ class ChatbotAI {
     this.conversationHistory.push({ type: 'user', message: input, timestamp: new Date() });
     this.questionIndex++;
 
+    // Capture contact information
+    if (type === 'name') {
+      this.userPreferences.name = input;
+    } else if (type === 'email') {
+      this.userPreferences.email = input;
+    } else if (type === 'phone') {
+      this.userPreferences.phone = input;
+      // Send contact details to server for cold outreach
+      this.syncContactData();
+    }
     // Learn from user input
-    if (type === 'interest') {
+    else if (type === 'interest') {
       this.userPreferences.interest = input;
       this.serviceInterests.add(input);
     } else if (type === 'budget') {
@@ -815,8 +846,29 @@ class ChatbotAI {
     this.savePreferences();
   }
 
+  syncContactData() {
+    // Save contact data for cold outreach (in production, this would send to a server)
+    const contactData = {
+      name: this.userPreferences.name,
+      email: this.userPreferences.email,
+      phone: this.userPreferences.phone,
+      timestamp: new Date().toISOString(),
+      source: 'chatbot'
+    };
+    
+    // Store in localStorage for now (or integrate with your backend)
+    const existingLeads = JSON.parse(localStorage.getItem('chatbotLeads') || '[]');
+    existingLeads.push(contactData);
+    localStorage.setItem('chatbotLeads', JSON.stringify(existingLeads));
+    
+    console.log('✅ Lead captured for cold outreach:', contactData);
+  }
+
   generateResponse(userMessage, questionKey) {
     const responses = {
+      name: `Nice to meet you, ${userMessage}! 👋`,
+      email: `Got it, ${userMessage}. I've saved that.`,
+      phone: `Perfect! I have all your contact details. Now let's talk about your project.`,
       need: "Great! Let me find the perfect services for you.",
       interest: `Perfect! ${userMessage} services are exactly what we specialize in.`,
       timeline: `${userMessage}—we can definitely accommodate that.`,
@@ -879,6 +931,21 @@ function addMessage(text, sender, type = 'text', options = []) {
   const messageDiv = document.createElement('div');
   messageDiv.className = `chatbot-message ${sender}`;
 
+  // Get current question info for input field configuration
+  let inputFieldType = 'text';
+  let inputPlaceholder = 'Type your response...';
+  
+  if (sender === 'bot' && type !== 'quick_reply') {
+    // Determine input field properties based on current question
+    if (!chatbot.contactCaptured) {
+      const contactQuestion = chatbot.contactQuestions[chatbot.questionIndex];
+      if (contactQuestion) {
+        inputFieldType = contactQuestion.inputType || 'text';
+        inputPlaceholder = contactQuestion.placeholder || 'Type your response...';
+      }
+    }
+  }
+
   if (type === 'quick_reply' && options.length > 0) {
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-message-bubble';
@@ -905,6 +972,43 @@ function addMessage(text, sender, type = 'text', options = []) {
     bubble.className = 'chatbot-message-bubble';
     bubble.textContent = text;
     messageDiv.appendChild(bubble);
+    
+    // Add input field if this is a bot message and not a quick reply
+    if (sender === 'bot' && type !== 'quick_reply') {
+      setTimeout(() => {
+        const inputWrapper = document.createElement('div');
+        inputWrapper.style.cssText = 'display:flex;gap:8px;margin-top:12px;width:100%';
+        
+        const input = document.createElement('input');
+        input.type = inputFieldType;
+        input.placeholder = inputPlaceholder;
+        input.style.cssText = 'flex:1;background:var(--bg);border:1px solid var(--accent);color:#fff;border-radius:6px;padding:8px 12px;font-family:inherit;font-size:.85rem';
+        
+        const sendBtn = document.createElement('button');
+        sendBtn.textContent = '→';
+        sendBtn.style.cssText = 'background:var(--accent);color:var(--bg);border:none;border-radius:6px;padding:8px 12px;cursor:pointer;font-weight:bold;transition:all .2s';
+        sendBtn.onmouseover = () => sendBtn.style.opacity = '0.8';
+        sendBtn.onmouseout = () => sendBtn.style.opacity = '1';
+        
+        const handleSend = () => {
+          if (input.value.trim()) {
+            sendMessage(input.value.trim(), inputFieldType);
+            inputWrapper.remove();
+          }
+        };
+        
+        input.onkeypress = (e) => {
+          if (e.key === 'Enter') handleSend();
+        };
+        
+        sendBtn.onclick = handleSend;
+        
+        inputWrapper.appendChild(input);
+        inputWrapper.appendChild(sendBtn);
+        messageDiv.appendChild(inputWrapper);
+        input.focus();
+      }, 300);
+    }
   }
 
   messagesContainer.appendChild(messageDiv);
@@ -912,11 +1016,40 @@ function addMessage(text, sender, type = 'text', options = []) {
 }
 
 function sendMessage(message, optionType = null) {
+  // Email validation for contact capture phase
+  if (!chatbot.contactCaptured && optionType === 'email') {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(message)) {
+      addMessage('❌ Please enter a valid email address (e.g., you@example.com)', 'bot');
+      return;
+    }
+  }
+  
+  // Phone validation for contact capture phase
+  if (!chatbot.contactCaptured && optionType === 'tel') {
+    const phoneRegex = /^(\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
+    if (!phoneRegex.test(message)) {
+      addMessage('❌ Please enter a valid phone number (e.g., +1 (555) 123-4567 or 555-123-4567)', 'bot');
+      return;
+    }
+  }
+
   // Add user message
   addMessage(message, 'user');
   
-  const currentQuestion = chatbot.baseQuestions[Math.min(chatbot.questionIndex, chatbot.baseQuestions.length - 1)];
-  const questionKey = currentQuestion?.key || 'default';
+  // Get current question to extract the key
+  let questionKey = 'default';
+  if (!chatbot.contactCaptured) {
+    const contactIndex = chatbot.questionIndex;
+    if (contactIndex < chatbot.contactQuestions.length) {
+      questionKey = chatbot.contactQuestions[contactIndex].key;
+    }
+  } else {
+    const baseIndex = chatbot.questionIndex - chatbot.contactQuestions.length;
+    if (baseIndex < chatbot.baseQuestions.length) {
+      questionKey = chatbot.baseQuestions[baseIndex].key;
+    }
+  }
   
   // Record input and learn
   chatbot.recordUserInput(message, questionKey);
