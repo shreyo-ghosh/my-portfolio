@@ -906,6 +906,10 @@ function initChatbot() {
     window_el.classList.remove('open');
   });
 
+  document.getElementById('chatbotExport').addEventListener('click', () => {
+    exportLeadsToExcel();
+  });
+
   input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && input.value.trim()) {
       sendMessage(input.value);
@@ -1015,6 +1019,44 @@ function addMessage(text, sender, type = 'text', options = []) {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+function exportLeadsToExcel() {
+  const leads = JSON.parse(localStorage.getItem('chatbotLeads') || '[]');
+  
+  if (leads.length === 0) {
+    alert('No contact details captured yet.');
+    return;
+  }
+  
+  // Convert leads to Excel-compatible format (tab-separated)
+  const headers = ['Name', 'Email', 'Phone', 'Captured At', 'Source'];
+  const rows = leads.map(lead => [
+    lead.name || '',
+    lead.email || '',
+    lead.phone || '',
+    lead.timestamp ? new Date(lead.timestamp).toLocaleString() : '',
+    lead.source || 'chatbot'
+  ]);
+  
+  // Create TSV content (tab-separated, opens in Excel)
+  const tsvContent = [
+    headers.join('\t'),
+    ...rows.map(row => row.join('\t'))
+  ].join('\n');
+  
+  // Create blob and download
+  const blob = new Blob([tsvContent], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `LaunchLayer-Leads-${new Date().toISOString().split('T')[0]}.xlsx`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  addMessage(`✅ Exported ${leads.length} contact(s) to Excel!`, 'bot');
+}
+
 function sendMessage(message, optionType = null) {
   // Email validation for contact capture phase
   if (!chatbot.contactCaptured && optionType === 'email') {
@@ -1077,7 +1119,10 @@ document.addEventListener('DOMContentLoaded', initChatbot);
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
       <h3>LaunchLayer Assistant</h3>
-      <button class="chatbot-close" id="chatbotClose">✕</button>
+      <div style="display:flex;gap:8px">
+        <button class="chatbot-close" id="chatbotExport" title="Export leads to Excel" style="background:none;border:none;color:#fff;cursor:pointer;font-size:1rem;padding:0;opacity:0.7;transition:opacity .2s">📥</button>
+        <button class="chatbot-close" id="chatbotClose">✕</button>
+      </div>
     </div>
     <div class="chatbot-messages" id="chatbotMessages"></div>
     <div class="chatbot-info">💡 Each conversation helps us understand your needs better</div>
