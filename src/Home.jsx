@@ -1,5 +1,6 @@
 
 import { motion } from "framer-motion";
+import FreelanceAISolutions from "./components/FreelanceAISolutions";
 import { 
   Mail, 
   Linkedin, 
@@ -410,7 +411,8 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </secti
+            <FreelanceAISolutions />on>
 
              {/* Retainer Options */}
        <section className="py-20 bg-primary-light">
