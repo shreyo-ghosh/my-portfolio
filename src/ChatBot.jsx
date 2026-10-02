@@ -518,8 +518,9 @@ export default function ChatBot() {
 
       if (/whatsapp/i.test(text)) {
         replyWith({
-          text: `WhatsApp is **+91 98310 14716**. Or keep going here and I'll package a proper intro for **${JARVIS_NAME}**.`,
+          text: `Tap below to open WhatsApp. Or keep going here and I'll package a proper intro for **${JARVIS_NAME}**.`,
           chips: ["Start the intro"],
+          links: { waUrl: `https://wa.me/${WHATSAPP_NUMBER}`, mailUrl: `mailto:${CONTACT_EMAIL}` },
         });
         return;
       }
@@ -553,8 +554,9 @@ export default function ChatBot() {
       await completeLead({ ...leadRef.current }, true);
     } catch {
       replyWith({
-        text: `I couldn't send that. Email **${CONTACT_EMAIL}** or WhatsApp **+91 98310 14716**.`,
+        text: `I couldn't send that. Use one of the buttons below to reach us directly.`,
         chips: [],
+        links: { waUrl: `https://wa.me/${WHATSAPP_NUMBER}`, mailUrl: `mailto:${CONTACT_EMAIL}` },
       });
     } finally {
       setFormSending(false);

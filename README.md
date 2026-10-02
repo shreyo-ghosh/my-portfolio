@@ -182,8 +182,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions about this portfolio or to discuss IT services:
 
-- **Email**: [launchlayer.techh@gmail.com](mailto:launchlayer.techh@gmail.com)
-- **Phone**: [+91 98310 14716](tel:+919831014716)
+- **Email**: [Email us](mailto:launchlayer.techh@gmail.com)
+- **WhatsApp**: [Chat on WhatsApp](https://wa.me/919831014716)
 - **LinkedIn**: [Your Profile](https://linkedin.com/in/yourprofile)
 - **GitHub**: [Your Profile](https://github.com/yourprofile)
 

@@ -926,7 +926,7 @@ export default function Home() {
           <h3>Free audit or cost snapshot. Clear next steps. No pitch theatre.</h3>
           <p className="section-body">Tell us whether you need agents, a stuck PoC fixed, or cloud/AI spend cut. We'll spend 30 minutes on your reality and send a priority map — even if you don't hire us.</p>
           <br />
-          {[{icon:"📧",label:"Email",content:<a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>},{icon:"💬",label:"WhatsApp (India)",content:<a href={`https://wa.me/${WHATSAPP_NUMBER}`}>+91 98310 14716</a>},{icon:"🌐",label:"Serving",content:<span style={{color:"var(--text)",fontSize:"0.9rem"}}>India · UAE · UK · USA · Australia</span>}].map(item => (
+          {[{icon:"📧",label:"Email",content:<a href={`mailto:${CONTACT_EMAIL}`}>Email us →</a>},{icon:"💬",label:"WhatsApp (India)",content:<a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer">Chat on WhatsApp →</a>},{icon:"🌐",label:"Serving",content:<span style={{color:"var(--text)",fontSize:"0.9rem"}}>India · UAE · UK · USA · Australia</span>}].map(item => (
             <div className="contact-item" key={item.label}>
               <div className="contact-icon">{item.icon}</div>
               <div className="contact-detail"><h5>{item.label}</h5>{item.content}</div>
@@ -989,7 +989,7 @@ export default function Home() {
                   <p className="form-hint">
                     Prefer email?{" "}
                     <button type="button" onClick={openEmailFallback} style={{ background: "none", border: "none", color: "var(--amber)", cursor: "pointer", font: "inherit", padding: 0, textDecoration: "underline" }}>
-                      Send to {CONTACT_EMAIL}
+                      Send it that way
                     </button>
                   </p>
                 )}
@@ -1033,7 +1033,7 @@ export default function Home() {
         <div className="footer-col">
           <h4>Contact</h4>
           <ul>
-            <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+            <li><a href={`mailto:${CONTACT_EMAIL}`}>Email</a></li>
             <li><a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp India</a></li>
             <li><a href="https://www.linkedin.com/company/143744064/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
             <li><a href="#contact">Book a Call</a></li>
