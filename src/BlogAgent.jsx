@@ -592,12 +592,13 @@ OUTPUT FORMAT (JSON only, no markdown fences):
     <div className="ba-root">
       {/* TOPBAR */}
       <div className="ba-topbar">
-        <div className="ba-logo">
+        <a href="/" className="ba-logo" style={{ textDecoration: "none", color: "inherit" }}>
           <span>LaunchLayer</span>
           <span className="ba-logo-dot" />
           <span className="ba-logo-sub">Blog Agent</span>
-        </div>
+        </a>
         <div className="ba-topbar-right">
+          <a href="/" style={{ color: "#7a7a9a", textDecoration: "none", fontSize: "0.78rem", fontWeight: 600, marginRight: 8 }}>← Home</a>
           <div className="ba-stat-pill">Published <span>{publishedCount}</span></div>
           <div className="ba-stat-pill">Drafts <span>{draftCount}</span></div>
           <div className="ba-stat-pill">Total reads <span>{totalReads.toLocaleString()}</span></div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ChatBot from "./ChatBot";
 
 /* ─── STYLES ─── */
 const CSS = `
@@ -42,21 +43,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(245,166,35,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
 .hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(245,166,35,.1) 0%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 .hero-content{position:relative;z-index:1;text-align:center;max-width:920px}
-.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:100px;padding:.38rem .95rem;font-size:.78rem;color:var(--amber);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.8rem;animation:fadeUp .6s ease both}
-.mkt-toggle{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:100px;padding:3px;gap:2px;margin-bottom:1.4rem;animation:fadeUp .55s ease both}
-.mtb{padding:.3rem .85rem;border-radius:100px;border:none;cursor:pointer;font-size:.75rem;font-weight:600;color:var(--muted);background:transparent;transition:all .2s;font-family:'Instrument Sans',sans-serif}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:8px;padding:.38rem .95rem;font-size:.78rem;color:var(--amber);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.6rem;animation:fadeUp .6s ease both}
+.mkt-toggle{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px;margin-bottom:1.2rem;animation:fadeUp .55s ease both}
+.mtb{padding:.35rem .9rem;border-radius:6px;border:none;cursor:pointer;font-size:.75rem;font-weight:600;color:var(--muted);background:transparent;transition:all .2s;font-family:'Instrument Sans',sans-serif}
 .mtb.on{background:var(--amber);color:#0a0a0f}
 .hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;color:var(--white);animation:fadeUp .7s .1s ease both}
 .hero h1 .accent{color:var(--amber)}.hero h1 .accent2{color:var(--teal)}
-.tagline-block{margin:1.6rem auto;animation:fadeUp .7s .2s ease both}
-.tagline-primary{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--white);letter-spacing:-.01em;margin-bottom:.3rem}
-.tagline-divider{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:.3rem}
-.tagline-divider span{height:1px;width:48px;background:rgba(255,255,255,.12)}
-.tagline-divider small{font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.tagline-secondary{font-size:.95rem;color:var(--muted);font-style:italic}
-.hero-sub{font-size:1.08rem;color:var(--muted);max-width:600px;margin:.9rem auto 2.2rem;line-height:1.7;animation:fadeUp .7s .3s ease both}
-.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s .4s ease both}
-.hero-markets{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-top:1.6rem;font-size:.78rem;color:var(--muted);animation:fadeUp .7s .5s ease both;flex-wrap:wrap}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:560px;margin:1.4rem auto 2.2rem;line-height:1.7;animation:fadeUp .7s .2s ease both}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s .3s ease both}
+.hero-markets{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-top:1.8rem;font-size:.78rem;color:var(--muted);animation:fadeUp .7s .4s ease both;flex-wrap:wrap}
 .hero-markets span{display:flex;align-items:center;gap:.3rem}
 .mkt-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0}
 
@@ -73,6 +68,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .stat-item:hover{background:rgba(245,166,35,.04)}
 .stat-num{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;color:var(--amber);display:block}
 .stat-label{font-size:.82rem;color:var(--muted);letter-spacing:.03em;margin-top:.25rem}
+.stats-note{text-align:center;padding:0.85rem 1.5rem 1.2rem;font-size:.75rem;color:var(--muted);background:var(--bg2);border-bottom:1px solid var(--border)}
 
 /* ─── SECTION BASICS ─── */
 section{padding:6rem 4rem;position:relative}
@@ -97,20 +93,7 @@ section{padding:6rem 4rem;position:relative}
 .brand-signals{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
 .bsig{font-size:.7rem;font-weight:600;padding:.18rem .5rem;border-radius:4px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);color:var(--amber)}
 .brand-card.teal-card .bsig{background:rgba(0,201,177,.1);border-color:rgba(0,201,177,.2);color:var(--teal)}
-.tagline-showcase{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:2.5rem}
-.tagline-showcase::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,166,35,.08),transparent 60%);pointer-events:none}
-.tl-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
-.tl-main{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:.5rem}
-.tl-main .a{color:var(--amber)}
-.tl-sep{font-size:.7rem;color:var(--muted);margin:.6rem 0;letter-spacing:.08em;text-transform:uppercase}
-.tl-alt{font-family:'Syne',sans-serif;font-size:clamp(1rem,2vw,1.4rem);font-weight:700;color:rgba(255,255,255,.45)}
-.tl-exp{font-size:.82rem;color:var(--muted);margin-top:1rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
-.brand-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
-.brand-why-card{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:border-color .2s,transform .2s}
-.brand-why-card:hover{border-color:rgba(245,166,35,.25);transform:translateY(-3px)}
-.brand-why-icon{font-size:1.5rem;margin-bottom:.7rem}
-.brand-why-card h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:var(--white);margin-bottom:.4rem}
-.brand-why-card p{font-size:.8rem;color:var(--muted);line-height:1.55}
+.brand-name-grid{margin-bottom:0}
 
 /* ─── MARKET SECTION ─── */
 .market-section{background:var(--bg2)}
@@ -159,6 +142,23 @@ section{padding:6rem 4rem;position:relative}
 .service-card p{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
 .service-tag-list{display:flex;flex-wrap:wrap;gap:.4rem}
 .stag{font-size:.72rem;font-weight:600;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.2);color:var(--amber);border-radius:4px;padding:.2rem .5rem;letter-spacing:.02em}
+
+/* ─── CAPABILITIES ─── */
+.cap-section{background:var(--bg2)}
+.cap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2.5rem}
+.cap-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.6rem 1.3rem;transition:border-color .2s,transform .2s}
+.cap-card:hover{border-color:rgba(245,166,35,.35);transform:translateY(-3px)}
+.cap-kicker{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.55rem}
+.cap-card h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.55rem;line-height:1.25}
+.cap-card p{font-size:.8rem;color:var(--muted);line-height:1.55}
+.lead-strip{margin-top:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.lead-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.6rem;display:flex;flex-direction:column;gap:.6rem;text-decoration:none;transition:border-color .2s,transform .2s}
+.lead-card:hover{border-color:rgba(245,166,35,.4);transform:translateY(-2px)}
+.lead-card.teal:hover{border-color:rgba(0,201,177,.4)}
+.lead-card h4{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--white)}
+.lead-card p{font-size:.85rem;color:var(--muted);line-height:1.5;flex:1}
+.lead-card span{font-size:.85rem;font-weight:700;color:var(--amber)}
+.lead-card.teal span{color:var(--teal)}
 
 /* ─── USE CASES ─── */
 .usecase-section{background:var(--bg2)}
@@ -250,8 +250,17 @@ section{padding:6rem 4rem;position:relative}
 .contact-detail h5{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.15rem}
 .contact-detail a{color:var(--text);font-size:.9rem;text-decoration:none}
 .contact-detail a:hover{color:var(--amber)}
-.avail-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,201,177,.1);border:1px solid rgba(0,201,177,.25);padding:.5rem 1rem;border-radius:100px;font-size:.8rem;color:var(--teal);font-weight:600;margin-top:2rem}
+.avail-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,201,177,.1);border:1px solid rgba(0,201,177,.25);padding:.5rem 1rem;border-radius:8px;font-size:.8rem;color:var(--teal);font-weight:600;margin-top:2rem}
 .avail-dot{width:7px;height:7px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
+.form-actions{display:flex;flex-direction:column;gap:.75rem}
+.form-hint{font-size:.78rem;color:var(--muted);text-align:center;line-height:1.5}
+.form-hint a{color:var(--amber);text-decoration:none}
+.form-success{background:rgba(0,201,177,.1);border:1px solid rgba(0,201,177,.3);border-radius:12px;padding:1.5rem;text-align:center}
+.form-success h4{font-family:'Syne',sans-serif;color:var(--teal);margin-bottom:.5rem;font-size:1.1rem}
+.form-success p{color:var(--muted);font-size:.9rem;line-height:1.6}
+.btn-ghost{background:transparent;color:var(--muted);padding:.65rem 1rem;border-radius:8px;font-weight:600;font-size:.85rem;border:1px solid var(--border);cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:border-color .2s,color .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.25);color:var(--white)}
+.uc-disclaimer{font-size:.85rem;color:var(--muted);margin-top:.75rem;max-width:580px;line-height:1.55}
 
 /* ─── CTA ─── */
 .cta-section{background:var(--bg);text-align:center;padding:7rem 4rem}
@@ -281,8 +290,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
   .hamburger{display:block}
   section{padding:4rem 1.5rem}
   .stats-bar{grid-template-columns:repeat(2,1fr)}
-  .problem-section,.usecase-grid,.tools-intro,.contact-section,.market-grid{grid-template-columns:1fr;gap:2rem}
+  .problem-section,.usecase-grid,.tools-intro,.contact-section,.market-grid,.lead-strip{grid-template-columns:1fr;gap:2rem}
   .services-grid,.pricing-grid{grid-template-columns:1fr}
+  .cap-grid{grid-template-columns:1fr 1fr}
   .industries-grid{grid-template-columns:repeat(2,1fr)}
   .hiw-steps{grid-template-columns:1fr}.hiw-steps::before{display:none}
   footer{grid-template-columns:1fr 1fr;gap:2rem}
@@ -291,64 +301,88 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
   .cta-box{padding:2.5rem 1.5rem}
   .footer-bottom{flex-direction:column;gap:.8rem;padding:1.2rem 1.5rem;text-align:center}
   .brand-name-grid{grid-template-columns:1fr}
-  .brand-why-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:600px){
-  .industries-grid{grid-template-columns:1fr 1fr}
+  .industries-grid,.cap-grid{grid-template-columns:1fr}
   footer{grid-template-columns:1fr}
   .cta-box h2{font-size:1.8rem}
-  .brand-why-grid{grid-template-columns:1fr}
   .pricing-dual{flex-direction:column;gap:.2rem}
 }
 `;
 
 /* ─── DATA ─── */
+const CAPABILITIES = [
+  { kicker: "Agentic AI", title: "AI agents that do the work", desc: "Multi-step agents that research, decide, call tools, and complete jobs — not chatbots that only answer questions." },
+  { kicker: "MLOps", title: "From notebook to production", desc: "Pipelines, model versioning, CI/CD for ML, monitoring, and rollback — so AI ships and stays alive in prod." },
+  { kicker: "AIRE", title: "AI Reliability Engineering", desc: "Evals, guardrails, observability, and failure playbooks. Treat AI systems like production infrastructure, not demos." },
+  { kicker: "FDE", title: "Forward Deployed Engineers", desc: "We embed with your team, sit in the workflows, and ship working systems in your stack — not slide decks." },
+  { kicker: "Cost Control", title: "Cloud & AI spend reduction", desc: "Find waste in AWS/GCP/Azure and LLM bills. Right-size infra, cache, route models, and cut cost without killing quality." },
+];
+
 const SERVICES = [
-  { icon: "🤖", title: "AI Workflow Automation", desc: "Connect apps, emails, WhatsApp, ERP and databases into automated pipelines that run without human input.", tags: ["n8n", "Make.com", "Zapier", "Low-cost"] },
-  { icon: "💬", title: "AI Chatbot & Assistants", desc: "Deploy AI assistants on your website, WhatsApp, or internal portal to handle queries and support 24/7.", tags: ["GPT-4o", "Claude", "WhatsApp API"] },
-  { icon: "📊", title: "AI Reporting & Analytics", desc: "Turn scattered data into auto-generated dashboards. Ask business questions in plain English.", tags: ["Power BI", "Looker", "LLM Analytics"] },
-  { icon: "📄", title: "Document Intelligence & OCR", desc: "Extract data from invoices, POs, forms, and PDFs automatically — zero manual keying.", tags: ["Invoice AI", "OCR", "ERP Integration"] },
-  { icon: "🔗", title: "Systems Integration & API", desc: "Connect your CRM, ERP, accounting tools, logistics platforms and e-commerce systems.", tags: ["REST APIs", "Tally", "SAP/Zoho"] },
-  { icon: "🚀", title: "AI Lead Generation", desc: "Build AI-driven sales funnels, automated email sequences, and lead scoring systems.", tags: ["CRM Automation", "Email AI", "LinkedIn AI"] },
+  { icon: "🤖", title: "Agentic AI & Workflow Automation", desc: "Design agents and pipelines that connect apps, email, WhatsApp, ERP, and APIs — then execute multi-step work without human babysitting.", tags: ["Agents", "n8n", "Tools", "APIs"] },
+  { icon: "💸", title: "Cloud & AI Cost Reduction", desc: "Audit infra and LLM usage. Cut idle spend, pick cheaper models where safe, and put budgets/alerts in place so AI scales profitably.", tags: ["FinOps", "LLM Routing", "AWS/GCP/Azure"] },
+  { icon: "⚙️", title: "MLOps & Model Lifecycle", desc: "Productionize experiments: training/inference pipelines, feature stores, registries, canary deploys, and drift detection.", tags: ["CI/CD", "Monitoring", "Deploy"] },
+  { icon: "🛡️", title: "AIRE — Production AI Reliability", desc: "Harden AI before and after launch: eval suites, prompt/version control, hallucination checks, incident response, and SLAs.", tags: ["Evals", "Guardrails", "Observability"] },
+  { icon: "🧑‍💻", title: "FDE Embeds & Delivery Pods", desc: "A Forward Deployed Engineer joins your squad to discover, build, and hand over — velocity of a product team, accountability of a partner.", tags: ["Embed", "Ship", "Handover"] },
+  { icon: "💬", title: "Assistants, Docs & Integrations", desc: "Customer/support agents, OCR & document intelligence, CRM/ERP wiring, and dashboards your ops team will actually use.", tags: ["WhatsApp", "OCR", "Tally/Zoho"] },
 ];
 
 const USE_CASES = [
-  { emoji: "🏭", title: "Manufacturing — Purchase Order Processing", sub: "India · SME · 50 employees", problem: '"3 people whose entire job is receiving supplier emails, reading POs, and updating Excel. All day."', solution: "We built an AI pipeline that reads incoming emails, extracts PO details, updates their ERP, and sends confirmations — all without human input.", metrics: [{ val: "90%", label: "Less manual work" }, { val: "3hrs→5min", label: "Processing time" }, { val: "₹4L/yr", label: "Labour cost saved" }] },
-  { emoji: "🏥", title: "Healthcare Clinic — Patient Scheduling", sub: "Global · Mid-sized clinic · 20 staff", problem: '"Our receptionist spends 4 hours daily on appointment reminders and we still have 30% no-shows."', solution: "We deployed a WhatsApp AI that sends personalized reminders, answers FAQs, and allows patients to confirm or reschedule — updating the scheduling system automatically.", metrics: [{ val: "45%", label: "No-shows reduced" }, { val: "4hrs", label: "Receptionist freed" }, { val: "24/7", label: "Patient support" }] },
-  { emoji: "🛒", title: "E-commerce Brand — Customer Support AI", sub: "India D2C · 200+ orders/day", problem: '"150+ customer messages a day. Our 2 support agents are overwhelmed, response time is 12+ hours."', solution: "We integrated an AI chatbot trained on their FAQs, connected to their order system. Resolves 80% of queries instantly.", metrics: [{ val: "80%", label: "Queries auto-resolved" }, { val: "2min", label: "Avg response time" }, { val: "4.8★", label: "Support rating" }] },
-  { emoji: "🏗️", title: "Real Estate — Lead Qualification & Nurturing", sub: "UK / UAE Market", problem: '"We get 200 enquiries monthly but agents can only call 40. The rest go cold."', solution: "We built an AI funnel: instant response to every enquiry, AI qualification scoring, only the top 30% passed to agents — pre-qualified and warm.", metrics: [{ val: "3×", label: "More leads worked" }, { val: "60%", label: "Agent time saved" }, { val: "28%", label: "Conversion uplift" }] },
+  { emoji: "🏭", title: "Manufacturing — Agent-led PO Processing", sub: "India · SME · Ops automation", problem: '"3 people spend all day reading supplier emails and updating Excel."', solution: "An agent reads inbound mail, extracts PO fields, updates ERP, and sends confirmations — with human review only on exceptions.", metrics: [{ val: "90%", label: "Less manual work*" }, { val: "3hrs→5min", label: "Cycle time*" }, { val: "₹4L/yr", label: "Labour saved*" }] },
+  { emoji: "☁️", title: "SaaS Scale-up — Cloud & LLM Cost Cut", sub: "Global · Product / Eng", problem: '"Our AWS + OpenAI bill doubled and nobody can explain why."', solution: "Cost audit across cloud and model usage: right-sized instances, caching, cheaper-model routing for low-risk calls, and spend alerts.", metrics: [{ val: "25–40%", label: "Bill reduction*" }, { val: "2 wks", label: "To first cuts*" }, { val: "Clear", label: "Cost ownership*" }] },
+  { emoji: "🧪", title: "AI Pilot → Production (MLOps + AIRE)", sub: "Mid-market · Stuck PoC", problem: '"We have a demo that works in a notebook. It dies the moment real users touch it."', solution: "FDE embeds to productionize: pipelines, evals, monitoring, rollback. The pilot becomes a reliable service with owners and SLAs.", metrics: [{ val: "Prod", label: "Not another PoC*" }, { val: "Evals", label: "Before every ship*" }, { val: "On-call", label: "Failure playbooks*" }] },
+  { emoji: "🏗️", title: "Real Estate — Agentic Lead Qualification", sub: "UK / UAE Market", problem: '"200 enquiries a month; agents only work 40. The rest go cold."', solution: "An agent responds instantly, scores intent, books meetings, and hands only warm leads to humans — CRM updated automatically.", metrics: [{ val: "3×", label: "Leads worked*" }, { val: "60%", label: "Agent time saved*" }, { val: "28%", label: "Conversion uplift*" }] },
 ];
 
 const INDUSTRIES = [
-  { emoji: "🏭", title: "Manufacturing & Supply Chain", desc: "PO processing, inventory tracking, supplier coordination, quality alerts.", badge: "ind-india", badgeText: "India Market" },
-  { emoji: "🛒", title: "E-Commerce & D2C Brands", desc: "Customer support bots, order automation, returns processing, reviews AI.", badge: "ind-both", badgeText: "India + Global" },
-  { emoji: "🏥", title: "Healthcare & Clinics", desc: "Appointment bots, patient follow-ups, prescription reminders, billing workflows.", badge: "ind-both", badgeText: "India + Global" },
-  { emoji: "🏦", title: "Finance, CA & Legal Firms", desc: "Document extraction, compliance checklists, client onboarding, invoice AI.", badge: "ind-india", badgeText: "India Market" },
-  { emoji: "🏠", title: "Real Estate", desc: "Lead qualification funnels, WhatsApp AI, property matching bots, CRM automation.", badge: "ind-both", badgeText: "India + Global" },
-  { emoji: "🎓", title: "EdTech & Coaching", desc: "Student enquiry bots, admission funnels, fee reminders, performance dashboards.", badge: "ind-india", badgeText: "India Market" },
-  { emoji: "🚚", title: "Logistics & 3PL", desc: "Tracking automation, delivery notifications, vendor communication, dispute AI.", badge: "ind-global", badgeText: "Global / GCC" },
-  { emoji: "🧑‍💼", title: "HR & Recruitment", desc: "Resume screening AI, interview scheduling bots, onboarding automation, payroll alerts.", badge: "ind-global", badgeText: "Global Outsourcing" },
+  { emoji: "🏭", title: "Manufacturing & Supply Chain", desc: "PO agents, inventory signals, supplier coordination, quality alerts.", badge: "ind-india", badgeText: "India Market" },
+  { emoji: "🛒", title: "E-Commerce & D2C", desc: "Support agents, order automation, returns, review workflows.", badge: "ind-both", badgeText: "India + Global" },
+  { emoji: "💻", title: "SaaS & Product Teams", desc: "MLOps, AIRE, FDE embeds, cloud/LLM FinOps for scaling AI features.", badge: "ind-global", badgeText: "Global / Tech" },
+  { emoji: "🏦", title: "Finance, CA & Legal", desc: "Document extraction, compliance checklists, onboarding, invoice AI.", badge: "ind-india", badgeText: "India Market" },
+  { emoji: "🏥", title: "Healthcare & Clinics", desc: "Scheduling agents, follow-ups, billing workflows, reliable assistants.", badge: "ind-both", badgeText: "India + Global" },
+  { emoji: "🏠", title: "Real Estate", desc: "Lead qualification agents, WhatsApp AI, CRM automation.", badge: "ind-both", badgeText: "India + Global" },
+  { emoji: "🚚", title: "Logistics & 3PL", desc: "Tracking automation, vendor comms, dispute agents, cost dashboards.", badge: "ind-global", badgeText: "Global / GCC" },
+  { emoji: "🧑‍💼", title: "HR & Shared Services", desc: "Screening agents, scheduling, onboarding automation, payroll alerts.", badge: "ind-global", badgeText: "Global Outsourcing" },
 ];
 
-const BRAND_WHY = [
-  { icon: "🌍", title: "Global yet pronounceable", desc: "Works perfectly in English, Hindi, and every major market from Mumbai to Manchester." },
-  { icon: "🏗️", title: "\"Layer\" signals depth", desc: "Building blocks, tech stacks, capability layers — it says we're engineers, not chatbot sellers." },
-  { icon: "🚀", title: "\"Launch\" signals speed", desc: "Clients launch automations in weeks. The name promises momentum." },
-  { icon: "🔁", title: "A positioning statement", desc: "\"We lay the AI layer under your business\" — the name IS the pitch." },
-  { icon: "🎯", title: "Domain-friendly", desc: "Clean, modern, not overused. Works for .com, .in, or .ai domains." },
-  { icon: "💡", title: "Scales with ambition", desc: "Works as a consultancy today and a 50-person agency tomorrow." },
-];
+const CONTACT_EMAIL = "launchlayer.techh@gmail.com";
+const WHATSAPP_NUMBER = "919831014716";
+const JARVIS_WEBHOOK = import.meta.env.VITE_JARVIS_WEBHOOK_URL || "";
 
 const MKT_COPY = {
-  both: { h1: <>Your Business.<br /><span className="accent">Automated.</span><br /><span className="accent2">Elevated.</span></>, tl: "Work Less. Automate More. Grow Faster.", sub: "We replace repetitive manual work with AI-powered workflows — so your team stops firefighting and starts scaling. Intelligent automation in weeks, not months." },
-  india: { h1: <>Your Business.<br /><span className="accent">Automated.</span><br /><span className="accent2">₹ Saved.</span></>, tl: "काम कम। Automate ज़्यादा। बढ़ो और तेज़।", sub: "We replace manual work — Excel copy-paste, WhatsApp follow-ups, invoice entry — with AI pipelines that run while you sleep. Affordable pricing in ₹. WhatsApp-first support. Tally & Zoho integrations." },
-  global: { h1: <>Your Business.<br /><span className="accent">Automated.</span><br /><span className="accent2">ROI Proven.</span></>, tl: "Work Less. Automate More. Grow Faster.", sub: "We replace repetitive manual work with AI-powered workflows proven to deliver 3–5× ROI within the first month. SLA-backed delivery. International compliance. USD pricing with full data security." },
+  both: {
+    h1: <>Ship AI that<br /><span className="accent">works in prod.</span><br /><span className="accent2">Not just demos.</span></>,
+    badge: "Agentic AI · MLOps · AIRE · FDE · Cost Control",
+    sub: "LaunchLayer is the AI layer for businesses that are done with pilots. We embed, ship agents, harden reliability, and cut cloud/AI waste — so you save money and move faster.",
+  },
+  india: {
+    h1: <>Automate busywork.<br /><span className="accent">Cut cloud waste.</span><br /><span className="accent2">Grow in ₹.</span></>,
+    badge: "AI systems for Indian SMEs & scale-ups",
+    sub: "From WhatsApp agents and Tally workflows to cloud/AI cost cuts — priced in ₹, WhatsApp-first support, shipped by engineers who sit in your process.",
+  },
+  global: {
+    h1: <>FDEs who ship.<br /><span className="accent">Agents that run.</span><br /><span className="accent2">Bills that drop.</span></>,
+    badge: "Production AI for UAE · UK · USA · Australia",
+    sub: "Forward Deployed Engineers, MLOps, and AI Reliability Engineering — so your AI features leave the lab. Plus FinOps on cloud and LLM spend.",
+  },
 };
 
 /* ─── COMPONENT ─── */
 export default function Home() {
   const [market, setMarket] = useState("both");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [formStatus, setFormStatus] = useState("idle");
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    business: "",
+    email: "",
+    industry: "",
+    billing: "",
+    helpWith: "",
+    process: "",
+  });
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -360,14 +394,88 @@ export default function Home() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const handleSubmit = (e) => {
-    const form = e.currentTarget.closest(".contact-form");
-    const name = form.querySelector('input[type="text"]').value;
-    const email = form.querySelector('input[type="email"]').value;
-    if (!name || !email) { alert("Please fill in your name and email."); return; }
-    e.currentTarget.textContent = "✅ Booked! We'll be in touch within 24 hours.";
-    e.currentTarget.style.background = "var(--teal)";
-    e.currentTarget.disabled = true;
+  const updateField = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const buildLeadMessage = () =>
+    [
+      "Hi LaunchLayer — I'd like a free consult.",
+      "",
+      `Name: ${form.name}`,
+      form.business ? `Business: ${form.business}` : null,
+      `Email: ${form.email}`,
+      form.helpWith ? `Looking for: ${form.helpWith}` : null,
+      form.industry ? `Industry: ${form.industry}` : null,
+      form.billing ? `Billing: ${form.billing}` : null,
+      form.process ? `Context: ${form.process}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim()) {
+      alert("Please fill in your name and email.");
+      return;
+    }
+    setSubmitting(true);
+    const message = buildLeadMessage();
+    const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
+
+    try {
+      if (formspreeId) {
+        const res = await fetch(`https://formspree.io/f/${formspreeId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            name: form.name,
+            business: form.business,
+            email: form.email,
+            industry: form.industry,
+            billing: form.billing,
+            helpWith: form.helpWith,
+            process: form.process,
+            _subject: `LaunchLayer lead — ${form.helpWith || "Consult"} — ${form.name}`,
+          }),
+        });
+        if (!res.ok) throw new Error("Formspree failed");
+      }
+      if (JARVIS_WEBHOOK) {
+        await fetch(JARVIS_WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            event: "lead_handoff",
+            source: "launchlayer.in contact form",
+            pageUrl: window.location.href,
+            lead: {
+              name: form.name,
+              email: form.email,
+              company: form.business,
+              need: form.helpWith,
+              notes: form.process,
+              billing: form.billing,
+              industry: form.industry,
+            },
+          }),
+        }).catch(() => {});
+      }
+      if (!formspreeId && !JARVIS_WEBHOOK) {
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        window.open(waUrl, "_blank", "noopener,noreferrer");
+      }
+      setFormStatus("sent");
+    } catch {
+      const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`LaunchLayer lead — ${form.name}`)}&body=${encodeURIComponent(message)}`;
+      window.location.href = mailto;
+      setFormStatus("sent");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const openEmailFallback = () => {
+    const message = buildLeadMessage();
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`LaunchLayer lead — ${form.name || "New lead"}`)}&body=${encodeURIComponent(message)}`;
   };
 
   const mkt = MKT_COPY[market];
@@ -376,28 +484,29 @@ export default function Home() {
     <>
       {/* NAV */}
       <nav>
-        <a href="#" className="nav-logo">
+        <a href="/" className="nav-logo">
+          <img src="/logo-mark.svg" alt="" width="32" height="32" style={{ borderRadius: 8, flexShrink: 0 }} />
           <span>LaunchLayer</span>
           <span className="dot" />
-          <span className="nav-logo-sub">The AI layer your business was missing</span>
+          <span className="nav-logo-sub">AI that ships. Spend that drops.</span>
         </a>
         <ul className="nav-links">
-          <li><a href="#why-launchlayer">Why Us</a></li>
+          <li><a href="#capabilities">Capabilities</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="#industries">Industries</a></li>
+          <li><a href="#use-cases">Results</a></li>
           <li><a href="#pricing">Pricing</a></li>
-          <li><Link to="/blog" className="nav-blog">Blog Agent</Link></li>
+          <li><Link to="/blog" className="nav-blog">Blog</Link></li>
           <li><a href="#contact" className="nav-cta">Book Free Audit →</a></li>
         </ul>
         <button className="hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menu">
           {menuOpen ? "✕" : "☰"}
         </button>
         <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-          <a href="#why-launchlayer" onClick={closeMenu}>Why Us</a>
+          <a href="#capabilities" onClick={closeMenu}>Capabilities</a>
           <a href="#services" onClick={closeMenu}>Services</a>
-          <a href="#industries" onClick={closeMenu}>Industries</a>
+          <a href="#use-cases" onClick={closeMenu}>Results</a>
           <a href="#pricing" onClick={closeMenu}>Pricing</a>
-          <Link to="/blog" className="nav-blog" onClick={closeMenu}>Blog Agent</Link>
+          <Link to="/blog" className="nav-blog" onClick={closeMenu}>Blog</Link>
           <a href="#contact" className="nav-cta" onClick={closeMenu}>Book Free Audit →</a>
         </div>
       </nav>
@@ -407,26 +516,21 @@ export default function Home() {
         <div className="hero-grid-bg" />
         <div className="hero-glow" />
         <div className="hero-content">
-          <div className="mkt-toggle">
+          <div className="mkt-toggle" role="group" aria-label="Market focus">
             {[["both","All Markets"],["india","India"],["global","Global"]].map(([id,label]) => (
-              <button key={id} className={`mtb ${market===id?"on":""}`} onClick={() => setMarket(id)}>{label}</button>
+              <button key={id} type="button" className={`mtb ${market===id?"on":""}`} onClick={() => setMarket(id)}>{label}</button>
             ))}
           </div>
-          <div className="hero-badge">AI Automation Agency · India &amp; Global</div>
+          <div className="hero-badge">{mkt.badge}</div>
           <h1>{mkt.h1}</h1>
-          <div className="tagline-block">
-            <div className="tagline-primary">{mkt.tl}</div>
-            <div className="tagline-divider"><span /><small>or put it this way</small><span /></div>
-            <div className="tagline-secondary">"The AI Layer Your Business Was Missing."</div>
-          </div>
           <p className="hero-sub">{mkt.sub}</p>
           <div className="hero-btns">
             <a href="#contact" className="btn-primary">Book Free AI Audit →</a>
-            <a href="#use-cases" className="btn-secondary">See Real Results</a>
+            <a href="#capabilities" className="btn-secondary">See how we ship</a>
           </div>
           <div className="hero-markets">
-            {["India","UAE","UK","USA","Australia"].map((c,i) => (
-              <span key={c}><span className="mkt-dot" />{c}{i < 4 ? "" : ""}</span>
+            {["India","UAE","UK","USA","Australia"].map((c) => (
+              <span key={c}><span className="mkt-dot" />{c}</span>
             ))}
           </div>
         </div>
@@ -434,78 +538,88 @@ export default function Home() {
 
       {/* STATS */}
       <div className="stats-bar">
-        {[["200+","Hours saved per client/month"],["70%","Cost reduction on manual tasks"],["$30/hr","Starting engagement rate"],["2 Wks","Average time to first live automation"]].map(([n,l]) => (
-          <div className="stat-item" key={n}><span className="stat-num">{n}</span><span className="stat-label">{l}</span></div>
+        {[["25–40%","Typical cloud/AI bill cut*"],["2 Wks","To first live system*"],["Prod","PoCs hardened with AIRE"],["FDE","Engineers who embed & ship"]].map(([n,l]) => (
+          <div className="stat-item" key={l}><span className="stat-num">{n}</span><span className="stat-label">{l}</span></div>
         ))}
       </div>
+      <p className="stats-note">*Illustrative of engagements like yours — we confirm targets in a free audit before any build.</p>
 
       {/* BRAND POSITIONING */}
       <section className="brand-section" id="why-launchlayer">
         <span className="section-tag">Why LaunchLayer</span>
         <div className="brand-hero-line">
-          We don't just <span className="hl-a">launch</span> your automations —<br />
-          we build the <span className="hl-t">AI layer</span> your entire business runs on.
+          Most AI projects stall as demos.<br />
+          We <span className="hl-a">launch</span> production systems — and build the <span className="hl-t">AI layer</span> your ops, product, and finance teams can trust.
         </div>
         <div className="brand-name-grid">
           <div className="brand-card">
             <div className="brand-word">Launch</div>
-            <div className="brand-word-meaning">Speed · Momentum · Results</div>
-            <div className="brand-word-desc">We move fast. Clients go from "I have this problem" to "it's live and automated" in weeks — not months of planning. Launch means we ship real things quickly.</div>
-            <div className="brand-signals">{["Speed","Growth","Action","Impact"].map(s => <span key={s} className="bsig">{s}</span>)}</div>
+            <div className="brand-word-meaning">Ship · Embed · Measure</div>
+            <div className="brand-word-desc">FDEs sit inside your workflows, ship agents and pipelines in weeks, and leave you with something running — not a deck of recommendations.</div>
+            <div className="brand-signals">{["FDE embeds","Agentic AI","Weeks not quarters"].map(s => <span key={s} className="bsig">{s}</span>)}</div>
           </div>
           <div className="brand-card teal-card">
             <div className="brand-word">Layer</div>
-            <div className="brand-word-meaning">Depth · Infrastructure · Scalability</div>
-            <div className="brand-word-desc">Think of us as a new intelligent layer added under your business — handling repetitive work so every layer above it performs better.</div>
-            <div className="brand-signals">{["Tech Depth","Building Blocks","Stacked Capabilities","Foundation"].map(s => <span key={s} className="bsig">{s}</span>)}</div>
+            <div className="brand-word-meaning">Reliability · Cost · Scale</div>
+            <div className="brand-word-desc">MLOps + AIRE keep AI alive in production. FinOps on cloud and LLMs keeps the bill honest as you scale usage.</div>
+            <div className="brand-signals">{["MLOps","AIRE","Cloud & AI FinOps"].map(s => <span key={s} className="bsig">{s}</span>)}</div>
           </div>
         </div>
-        <div className="tagline-showcase">
-          <div className="tl-label">Our Brand Taglines</div>
-          <div className="tl-main">Work Less. <span className="a">Automate More.</span> Grow Faster.</div>
-          <div className="tl-sep">— or —</div>
-          <div className="tl-alt">"The AI Layer Your Business Was Missing."</div>
-          <div className="tl-exp">Both taglines speak directly to the pain — too much manual work, not enough growth — and promise the solution in one line. No buzzwords. No vague promises.</div>
-        </div>
-        <span className="section-tag" style={{ marginBottom: "1rem" }}>Why the name works</span>
-        <div className="brand-why-grid">
-          {BRAND_WHY.map(w => (
-            <div className="brand-why-card" key={w.title}>
-              <div className="brand-why-icon">{w.icon}</div>
-              <h4>{w.title}</h4>
-              <p>{w.desc}</p>
+      </section>
+
+      {/* CAPABILITIES */}
+      <section className="cap-section" id="capabilities">
+        <span className="section-tag">Capabilities</span>
+        <h2 className="section-title">The skills behind the AI layer</h2>
+        <p className="section-body">Automation alone is table stakes. We win when agents ship, spend drops, and production stops breaking.</p>
+        <div className="cap-grid">
+          {CAPABILITIES.map((c) => (
+            <div className="cap-card" key={c.kicker}>
+              <div className="cap-kicker">{c.kicker}</div>
+              <h3>{c.title}</h3>
+              <p>{c.desc}</p>
             </div>
           ))}
+        </div>
+        <div className="lead-strip">
+          <a href="#contact" className="lead-card" onClick={() => setForm((f) => ({ ...f, helpWith: "Free AI Opportunity Audit" }))}>
+            <h4>Free AI Opportunity Audit</h4>
+            <p>30 minutes. We map where agents, automation, or reliability work will pay back fastest — even if you don't hire us.</p>
+            <span>Book the audit →</span>
+          </a>
+          <a href="#contact" className="lead-card teal" onClick={() => setForm((f) => ({ ...f, helpWith: "Free Cloud & AI Cost Snapshot" }))}>
+            <h4>Free Cloud & AI Cost Snapshot</h4>
+            <p>Quick read on AWS/GCP/Azure and LLM waste. Leave with 3–5 concrete cut opportunities and owners.</p>
+            <span>Request cost snapshot →</span>
+          </a>
         </div>
       </section>
 
       {/* MARKET STRATEGY */}
       <section className="market-section" id="markets">
-        <span className="section-tag">Our Market Strategy</span>
-        <h2 className="section-title">One agency. Two markets.<br />Completely different plays.</h2>
-        <p className="section-body">We serve Indian SMEs and global businesses simultaneously — with a tailored approach for each. Same quality, different language and entry points.</p>
+        <span className="section-tag">Who we help</span>
+        <h2 className="section-title">One partner. Two buyer realities.</h2>
+        <p className="section-body">Indian operators who need busywork gone and ₹ ROI — and global product/ops teams who need production AI plus lower cloud bills.</p>
         <div className="market-grid">
           <div className="market-card india-card">
-            <div className="market-card-label">India Market</div>
-            <div className="market-card-title">India</div>
-            <div className="market-card-subtitle">Manufacturing · CA Firms · D2C · EdTech</div>
-            <div className="market-feat"><strong>Lead with cost savings in ₹</strong> — Indian decision-makers respond to clear rupee ROI, not abstract percentages.</div>
-            <div className="market-feat"><strong>WhatsApp-first communication</strong> — all support, updates, and follow-ups over WhatsApp.</div>
-            <div className="market-feat"><strong>Native integrations</strong> — Tally, Zoho Books, GST-aware workflows baked in.</div>
-            <div className="market-feat"><strong>Jargon-free language</strong> — plain Hindi/English so every business owner gets it.</div>
-            <div className="market-feat"><strong>Local case studies</strong> — Mumbai CA firm, Pune manufacturer, Delhi D2C brand.</div>
-            <div className="market-price">₹33,000<sub>/month · Growth Plan</sub></div>
+            <div className="market-card-label">India</div>
+            <div className="market-card-title">SMEs & operators</div>
+            <div className="market-card-subtitle">Manufacturing · CA · D2C · Services</div>
+            <div className="market-feat"><strong>Lead with ₹ savings</strong> — labour hours and tool waste, not jargon.</div>
+            <div className="market-feat"><strong>WhatsApp-first delivery</strong> — updates and support where your team already lives.</div>
+            <div className="market-feat"><strong>Local stack</strong> — Tally, Zoho, GST-aware workflows, bilingual clarity.</div>
+            <div className="market-feat"><strong>Agents on real ops</strong> — POs, leads, support, docs — shipped by an FDE mindset.</div>
+            <div className="market-price">From ₹33,000<sub>/month · Growth</sub></div>
           </div>
           <div className="market-card global-card">
-            <div className="market-card-label">Global Market</div>
-            <div className="market-card-title">Global</div>
+            <div className="market-card-label">Global</div>
+            <div className="market-card-title">Product, platform & ops</div>
             <div className="market-card-subtitle">UAE · UK · USA · Australia · GCC</div>
-            <div className="market-feat"><strong>Lead with ROI and hours saved</strong> — global clients want measurable business impact and benchmark data.</div>
-            <div className="market-feat"><strong>Emphasise data security</strong> — GDPR awareness, NDA-first, enterprise-grade compliance docs.</div>
-            <div className="market-feat"><strong>USD pricing, international billing</strong> — Stripe/PayPal, proper cross-border contracts.</div>
-            <div className="market-feat"><strong>International compliance</strong> — UAE labour law, UK GDPR, US data handling awareness.</div>
-            <div className="market-feat"><strong>Context-specific case studies</strong> — UAE logistics, UK real estate, Australian healthcare.</div>
-            <div className="market-price">$400<sub>/month · Growth Plan</sub></div>
+            <div className="market-feat"><strong>Kill the PoC graveyard</strong> — MLOps + AIRE to make AI production-grade.</div>
+            <div className="market-feat"><strong>FDE embeds</strong> — engineers in your standups, shipping in your repo.</div>
+            <div className="market-feat"><strong>Cloud & LLM FinOps</strong> — measurable bill reduction with quality intact.</div>
+            <div className="market-feat"><strong>Security-aware delivery</strong> — NDA-first, GDPR awareness, clear ownership.</div>
+            <div className="market-price">From $400<sub>/month · Growth · Enterprise custom</sub></div>
           </div>
         </div>
       </section>
@@ -514,13 +628,13 @@ export default function Home() {
       <section className="problem-section" id="problem">
         <div>
           <span className="section-tag">The Real Problem</span>
-          <h2 className="section-title">Your team is talented. But buried in tasks AI could handle.</h2>
-          <p className="section-body">Every hour spent on copy-paste, manual reports, and data entry is an hour not spent on strategy and growth. We've seen it across every industry.</p>
+          <h2 className="section-title">Three ways AI is failing your P&amp;L right now.</h2>
+          <p className="section-body">Manual work still eats headcount. Cloud and model bills climb without owners. Pilots impress leadership and then never reach production.</p>
           <br />
-          <p className="section-body" style={{ fontSize: "0.9rem" }}><strong style={{ color: "var(--white)" }}>Real example:</strong> A trading company in Mumbai had 3 staff spending 4 hours daily updating Excel from emails and WhatsApp messages. We automated it. Those same staff now handle 3× more client accounts.</p>
+          <p className="section-body" style={{ fontSize: "0.9rem" }}><strong style={{ color: "var(--white)" }}>What we fix:</strong> We replace busywork with agents, put FinOps on cloud/AI spend, and use FDE + MLOps + AIRE so systems stay up after launch day.</p>
         </div>
         <div className="problem-cards">
-          {[["📋","Manual Data Entry Hell","Teams spend hours copying data between spreadsheets, emails, and systems — automatable in days."],["⏰","Slow Report Generation","Monthly reports that take hours to compile can be auto-generated and delivered on schedule."],["📨","Lost Leads & Follow-ups","Inquiries that fall through the cracks — an AI can respond, qualify, and route leads 24/7."],["🔍","Data Scattered Everywhere","ERP here, WhatsApp there, email somewhere else. AI can unify, clean, and make data instantly queryable."]].map(([icon,title,desc]) => (
+          {[["📋","Busywork that never dies","Copy-paste, follow-ups, and report wrangling still own your team's calendar — agents can take the first 80%."],["💸","Cloud & AI bill shock","Idle infra, oversized instances, and unrouted LLM calls quietly burn budget with no FinOps owner."],["🧪","Pilots stuck in demo mode","Notebooks and slideware don't survive real users. Without MLOps and AIRE, AI never becomes a product."],["🕳️","No one to ship with you","Vendors throw architecture. You need an FDE who embeds, builds, and hands over working systems."]].map(([icon,title,desc]) => (
             <div className="problem-card" key={title}><span className="problem-icon">{icon}</span><div><h4>{title}</h4><p>{desc}</p></div></div>
           ))}
         </div>
@@ -529,9 +643,9 @@ export default function Home() {
       {/* SERVICES */}
       <section className="services-section" id="services">
         <div className="services-header">
-          <span className="section-tag">What We Do</span>
-          <h2 className="section-title">Six pillars of AI-powered transformation</h2>
-          <p className="section-body">Practical, affordable automation — no data science degree required from your team.</p>
+          <span className="section-tag">What We Deliver</span>
+          <h2 className="section-title">From agents to reliability to lower bills</h2>
+          <p className="section-body">One partner for automation, production AI, and cost control — scoped to your stack and market.</p>
         </div>
         <div className="services-grid">
           {SERVICES.map(s => (
@@ -547,9 +661,10 @@ export default function Home() {
 
       {/* USE CASES */}
       <section className="usecase-section" id="use-cases">
-        <span className="section-tag">Real Use Cases</span>
-        <h2 className="section-title">What AI automation looks like in the real world</h2>
-        <p className="section-body">Not theory. Actual scenarios from businesses like yours — across India and globally.</p>
+        <span className="section-tag">Example Outcomes</span>
+        <h2 className="section-title">What shipping the AI layer looks like</h2>
+        <p className="section-body">Illustrative scenarios across ops automation, cost control, and productionising AI.</p>
+        <p className="uc-disclaimer">Example outcomes for similar projects — not guarantees. Every engagement starts with a free audit against your real systems and bills.</p>
         <div className="usecase-grid">
           {USE_CASES.map(uc => (
             <div className="usecase-card" key={uc.title}>
@@ -560,7 +675,7 @@ export default function Home() {
               <div className="usecase-body">
                 <div className="uc-label">The Problem</div>
                 <div className="uc-scenario">{uc.problem}</div>
-                <div className="uc-label" style={{ marginTop: "1rem" }}>The AI Solution</div>
+                <div className="uc-label" style={{ marginTop: "1rem" }}>How we tackle it</div>
                 <p className="uc-result">{uc.solution}</p>
                 <div className="uc-metrics">{uc.metrics.map(m => <div className="uc-metric" key={m.label}><strong>{m.val}</strong><span>{m.label}</span></div>)}</div>
               </div>
@@ -572,8 +687,8 @@ export default function Home() {
       {/* INDUSTRIES */}
       <section className="industries-section" id="industries">
         <span className="section-tag">Who We Serve</span>
-        <h2 className="section-title">Industries &amp; Departments We Target</h2>
-        <p className="section-body">We focus on businesses where manual repetitive work is highest and AI ROI is fastest.</p>
+        <h2 className="section-title">Where ROI shows up fastest</h2>
+        <p className="section-body">Operators drowning in repetitive work — and product teams ready to take AI from pilot to production.</p>
         <div className="industries-grid">
           {INDUSTRIES.map(ind => (
             <div className="industry-card" key={ind.title}>
@@ -588,10 +703,14 @@ export default function Home() {
 
       {/* HOW IT WORKS */}
       <section className="hiw-section" id="how-it-works">
-        <span className="section-tag">Our Process</span>
-        <h2 className="section-title">From pain point to live automation in 3 steps</h2>
+        <span className="section-tag">How we work</span>
+        <h2 className="section-title">Audit → Embed &amp; build → Operate</h2>
         <div className="hiw-steps">
-          {[{n:"01",c:"s1",t:"Free AI Audit (30 mins)",d:"We do a free call to understand your current workflows. You leave with a clear automation priority map — even if you don't hire us."},{n:"02",c:"s2",t:"Build & Test (1–2 weeks)",d:"We build your first automation using low-cost, proven tools — n8n, Make.com, GPT-4o. Live prototype within 5–10 business days."},{n:"03",c:"s3",t:"Go Live & Measure ROI",d:"We deploy, monitor, and measure. You see hours saved and cost reduction in real numbers. Happy? We expand to the next automation."}].map(s => (
+          {[
+            { n: "01", c: "s1", t: "Free audit (30 mins)", d: "Map workflows, cloud/AI spend, and pilot risk. You leave with a priority list — automation, agents, FinOps, or AIRE — even if you don't hire us." },
+            { n: "02", c: "s2", t: "FDE embeds & ships (1–3 weeks)", d: "A Forward Deployed Engineer builds in your environment: agents, pipelines, cost fixes. Working system first — documentation and handover with it." },
+            { n: "03", c: "s3", t: "MLOps + AIRE in production", d: "Monitoring, evals, guardrails, and cost alerts so the system stays reliable and the bill stays sane as usage grows." },
+          ].map(s => (
             <div className="hiw-step" key={s.n}><div className={`step-num ${s.c}`}>{s.n}</div><h3>{s.t}</h3><p>{s.d}</p></div>
           ))}
         </div>
@@ -601,14 +720,14 @@ export default function Home() {
       <section className="tools-section" id="tools">
         <div className="tools-intro">
           <div>
-            <span className="section-tag">Cost-Smart AI Stack</span>
-            <h2 className="section-title">Powerful AI tools. Surprisingly affordable.</h2>
-            <p className="section-body">You don't need a ₹50L budget to start with AI. We use a stack that delivers enterprise-grade results at startup prices. Start lean, prove ROI, then scale.</p>
+            <span className="section-tag">Stack we ship with</span>
+            <h2 className="section-title">Pragmatic tools. Production discipline.</h2>
+            <p className="section-body">Lean automation where it wins. Full MLOps and cloud FinOps where your product and bill demand it. We pick for ROI, not resume keywords.</p>
             <br />
-            <p className="section-body" style={{ fontSize: "0.88rem", color: "var(--muted)" }}>n8n can be self-hosted on a $5/month server and automate hundreds of workflows — the same capability that costs $500+/month on enterprise tools.</p>
+            <p className="section-body" style={{ fontSize: "0.88rem", color: "var(--muted)" }}>Example: self-hosted n8n for ops workflows, model routing to cut LLM spend, and eval harnesses so agent changes don't silently regress.</p>
           </div>
           <div className="tools-grid">
-            {[["🔧 n8n","FREE*"],["⚙️ Make.com","$9/mo"],["🤖 GPT-4o","Pay/use"],["💬 Voiceflow","Free tier"],["📊 Metabase","FREE"],["📧 Brevo","Free tier"],["🔌 Zapier","$20/mo"],["📦 Supabase","Free tier"],["☁️ Vercel","FREE"]].map(([name,cost]) => (
+            {[["n8n / Make","Automate"],["Agents & tools","Ship"],["OpenAI / Claude","LLMs"],["AWS / GCP / Azure","Cloud"],["LangSmith / evals","AIRE"],["Docker / CI","MLOps"],["Power BI / Metabase","Insight"],["Supabase / Vercel","Ship fast"],["WhatsApp API","India ops"]].map(([name,cost]) => (
               <div className="tool-pill" key={name}>{name}<span className="t-cost">{cost}</span></div>
             ))}
           </div>
@@ -626,37 +745,37 @@ export default function Home() {
           <div className="pricing-card">
             <h3>Starter</h3>
             <div className="pricing-dual"><span className="price-usd">$30<sub>/hr</sub></span><span className="price-inr">₹2,500<sub>/hr</sub></span></div>
-            <p className="pricing-desc">Perfect for one-off automations and quick fixes. Pay only for what you need.</p>
+            <p className="pricing-desc">One-off builds and quick fixes. Ideal when you need a single workflow shipped fast.</p>
             <ul className="pricing-features">{["Single workflow automation build","Integration with 1–2 apps","Testing & handover documentation","1 week of post-launch support","Free 30-min audit call included"].map(f => <li key={f}>{f}</li>)}</ul>
             <a href="#contact" className="pricing-btn">Start with Hourly →</a>
           </div>
           <div className="pricing-card featured">
-            <div className="featured-tag">Most Popular</div>
+            <div className="featured-tag">Best value</div>
             <h3>Growth</h3>
             <div className="pricing-dual"><span className="price-usd">$400<sub>/mo</sub></span><span className="price-inr">₹33,000<sub>/mo</sub></span></div>
-            <p className="pricing-desc">10–20 hrs/month of dedicated automation + consulting. Best for growing SMEs.</p>
+            <p className="pricing-desc">~10–20 hrs/month reserved for you — lower effective rate than hourly, plus ongoing support.</p>
             <ul className="pricing-features">{["Up to 3 workflow automations/month","AI chatbot setup & management","Monthly performance review & ROI report","Priority WhatsApp support","Dedicated solutions consultant","GST invoice for India available"].map(f => <li key={f}>{f}</li>)}</ul>
             <a href="#contact" className="pricing-btn feat-btn">Book Free Audit First →</a>
           </div>
           <div className="pricing-card">
-            <h3>Enterprise</h3>
+            <h3>Enterprise / FDE</h3>
             <div className="pricing-dual"><span className="price-usd" style={{ fontSize: "1.8rem" }}>Custom</span></div>
-            <p className="pricing-desc">Full-stack AI transformation for larger businesses with complex workflows.</p>
-            <ul className="pricing-features">{["Unlimited workflow scope","Full ERP/CRM/API integration","AI agents & custom LLM builds","Dedicated team pod","SLA-backed delivery","NDAs & enterprise security","International compliance support"].map(f => <li key={f}>{f}</li>)}</ul>
-            <a href="#contact" className="pricing-btn">Talk to Us →</a>
+            <p className="pricing-desc">Embedded engineers for agent platforms, MLOps, AIRE, and multi-cloud FinOps.</p>
+            <ul className="pricing-features">{["FDE embed or dedicated pod","Agentic systems + MLOps","AIRE: evals, guardrails, SLAs","Cloud & LLM cost programme","NDAs & security-aware delivery","International compliance support"].map(f => <li key={f}>{f}</li>)}</ul>
+            <a href="#contact" className="pricing-btn" onClick={() => setForm((f) => ({ ...f, helpWith: "Enterprise / FDE engagement" }))}>Talk to Us →</a>
           </div>
         </div>
-        <div className="pricing-note">Indian clients billed in ₹ with GST invoices · Global clients billed in $ via Stripe or bank transfer</div>
+        <div className="pricing-note">Indian clients billed in ₹ with GST invoices · Global clients billed in $ via Stripe or bank transfer · Growth retainer typically works out cheaper per hour than Starter</div>
       </section>
 
       {/* CONTACT */}
       <section className="contact-section" id="contact">
         <div className="contact-info">
           <span className="section-tag">Let's Talk</span>
-          <h3>Get your free AI Audit. No sales pitch. Just insights.</h3>
-          <p className="section-body">We'll spend 30 minutes understanding your business and tell you exactly where AI can save you time and money — even if you don't hire us. Zero pressure.</p>
+          <h3>Free audit or cost snapshot. Clear next steps. No pitch theatre.</h3>
+          <p className="section-body">Tell us whether you need agents, a stuck PoC fixed, or cloud/AI spend cut. We'll spend 30 minutes on your reality and send a priority map — even if you don't hire us.</p>
           <br />
-          {[{icon:"📧",label:"Email",content:<a href="mailto:launchlayer.techh@gmail.com">launchlayer.techh@gmail.com</a>},{icon:"💬",label:"WhatsApp (India)",content:<a href="https://wa.me/919831014716">+91 98310 14716</a>},{icon:"🌐",label:"Serving",content:<span style={{color:"var(--text)",fontSize:"0.9rem"}}>India · UAE · UK · USA · Australia</span>}].map(item => (
+          {[{icon:"📧",label:"Email",content:<a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>},{icon:"💬",label:"WhatsApp (India)",content:<a href={`https://wa.me/${WHATSAPP_NUMBER}`}>+91 98310 14716</a>},{icon:"🌐",label:"Serving",content:<span style={{color:"var(--text)",fontSize:"0.9rem"}}>India · UAE · UK · USA · Australia</span>}].map(item => (
             <div className="contact-item" key={item.label}>
               <div className="contact-icon">{item.icon}</div>
               <div className="contact-detail"><h5>{item.label}</h5>{item.content}</div>
@@ -665,39 +784,77 @@ export default function Home() {
           <div className="avail-badge"><span className="avail-dot" />Currently accepting new projects</div>
         </div>
         <div className="contact-form">
-          <h4 style={{ fontFamily: "'Syne',sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--white)", marginBottom: "1.5rem" }}>Book your free AI Audit</h4>
-          <div className="form-row">
-            <div className="form-group"><label>Your Name</label><input type="text" placeholder="Rahul Sharma" /></div>
-            <div className="form-group"><label>Business Name</label><input type="text" placeholder="Sharma Exports Pvt Ltd" /></div>
-          </div>
-          <div className="form-group"><label>Email</label><input type="email" placeholder="rahul@company.com" /></div>
-          <div className="form-group">
-            <label>Industry</label>
-            <select>
-              <option value="">Select your industry...</option>
-              {["Manufacturing & Supply Chain","E-Commerce / D2C","Healthcare / Clinic","Finance / CA / Legal","Real Estate","EdTech / Coaching","Logistics / 3PL","HR / Recruitment","Other"].map(o => <option key={o}>{o}</option>)}
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Preferred billing</label>
-            <select>
-              <option value="">Select...</option>
-              <option>INR — ₹ with GST invoice (India)</option>
-              <option>USD — $ via Stripe or bank transfer (Global)</option>
-            </select>
-          </div>
-          <div className="form-group"><label>What's your biggest time-wasting manual process?</label><textarea placeholder="e.g. We manually copy data from emails to Excel every day, takes 3 hours..." /></div>
-          <button className="btn-primary" style={{ width: "100%", border: "none", fontSize: "1rem", padding: "0.9rem", cursor: "pointer" }} onClick={handleSubmit}>Book Free 30-min Audit →</button>
+          <h4 style={{ fontFamily: "'Syne',sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--white)", marginBottom: "1.5rem" }}>Book a free consult</h4>
+          {formStatus === "sent" ? (
+            <div className="form-success">
+              <h4>Request ready</h4>
+              <p>We opened WhatsApp (or your email app) with your details filled in. Send the message and we'll reply within 24 hours.</p>
+              <button type="button" className="btn-ghost" style={{ marginTop: "1rem" }} onClick={() => setFormStatus("idle")}>Submit another request</button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group"><label htmlFor="ll-name">Your Name</label><input id="ll-name" type="text" placeholder="Rahul Sharma" value={form.name} onChange={updateField("name")} required autoComplete="name" /></div>
+                <div className="form-group"><label htmlFor="ll-business">Business Name</label><input id="ll-business" type="text" placeholder="Sharma Exports Pvt Ltd" value={form.business} onChange={updateField("business")} autoComplete="organization" /></div>
+              </div>
+              <div className="form-group"><label htmlFor="ll-email">Email</label><input id="ll-email" type="email" placeholder="rahul@company.com" value={form.email} onChange={updateField("email")} required autoComplete="email" /></div>
+              <div className="form-group">
+                <label htmlFor="ll-help">What do you need help with?</label>
+                <select id="ll-help" value={form.helpWith} onChange={updateField("helpWith")}>
+                  <option value="">Select...</option>
+                  {[
+                    "Free AI Opportunity Audit",
+                    "Free Cloud & AI Cost Snapshot",
+                    "Agentic AI / workflow automation",
+                    "MLOps / productionise a pilot",
+                    "AIRE — reliability & evals",
+                    "FDE embed / delivery pod",
+                    "Enterprise / FDE engagement",
+                    "Not sure — advise me",
+                  ].map((o) => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="ll-industry">Industry</label>
+                <select id="ll-industry" value={form.industry} onChange={updateField("industry")}>
+                  <option value="">Select your industry...</option>
+                  {["Manufacturing & Supply Chain","E-Commerce / D2C","SaaS / Product","Healthcare / Clinic","Finance / CA / Legal","Real Estate","Logistics / 3PL","HR / Shared Services","Other"].map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="ll-billing">Preferred billing</label>
+                <select id="ll-billing" value={form.billing} onChange={updateField("billing")}>
+                  <option value="">Select...</option>
+                  <option value="INR — ₹ with GST invoice (India)">INR — ₹ with GST invoice (India)</option>
+                  <option value="USD — $ via Stripe or bank transfer (Global)">USD — $ via Stripe or bank transfer (Global)</option>
+                </select>
+              </div>
+              <div className="form-group"><label htmlFor="ll-process">What's broken, expensive, or stuck in demo mode?</label><textarea id="ll-process" placeholder="e.g. LLM bill spiked; PoC never reached prod; team still copy-pastes POs from email..." value={form.process} onChange={updateField("process")} /></div>
+              <div className="form-actions">
+                <button className="btn-primary" style={{ width: "100%", border: "none", fontSize: "1rem", padding: "0.9rem", cursor: "pointer" }} type="submit" disabled={submitting}>
+                  {submitting ? "Opening…" : (import.meta.env.VITE_FORMSPREE_ID ? "Book Free Consult →" : "Send via WhatsApp →")}
+                </button>
+                {!import.meta.env.VITE_FORMSPREE_ID && (
+                  <p className="form-hint">
+                    Prefer email?{" "}
+                    <button type="button" onClick={openEmailFallback} style={{ background: "none", border: "none", color: "var(--amber)", cursor: "pointer", font: "inherit", padding: 0, textDecoration: "underline" }}>
+                      Send to {CONTACT_EMAIL}
+                    </button>
+                  </p>
+                )}
+              </div>
+            </form>
+          )}
         </div>
       </section>
 
       {/* CTA */}
       <section className="cta-section">
         <div className="cta-box">
-          <h2>The AI layer your business was missing.</h2>
-          <div className="cta-tagline">Work Less. Automate More. Grow Faster.</div>
-          <p>Join businesses across India and the globe that have replaced manual work with AI that actually delivers ROI — in weeks, not years.</p>
-          <a href="#contact" className="btn-primary" style={{ display: "inline-block" }}>Book Free AI Audit →</a>
+          <h2>AI that ships. Spend that drops.</h2>
+          <div className="cta-tagline">Agents · MLOps · AIRE · FDE · FinOps</div>
+          <p>Join operators and product teams who replaced busywork, unstuck pilots, and cut cloud/AI waste — in weeks, not years.</p>
+          <a href="#contact" className="btn-primary" style={{ display: "inline-block" }}>Book Free Consult →</a>
         </div>
       </section>
 
@@ -705,39 +862,41 @@ export default function Home() {
       <footer>
         <div className="footer-brand">
           <h3>LaunchLayer</h3>
-          <div className="footer-tagline">Work Less. Automate More. Grow Faster.</div>
-          <p>AI automation agency serving Indian SMEs and global businesses. We replace manual work with intelligent workflows — the AI layer your business was missing.</p>
+          <div className="footer-tagline">AI that ships. Spend that drops.</div>
+          <p>Agentic systems, MLOps, AIRE, Forward Deployed Engineers, and cloud/AI cost reduction — production AI for India and global markets.</p>
         </div>
         <div className="footer-col">
           <h4>Services</h4>
-          <ul>{["AI Workflow Automation","AI Chatbots","Reporting & Analytics","Document Intelligence","Systems Integration","Lead Gen Automation"].map(s => <li key={s}><a href="#services">{s}</a></li>)}</ul>
+          <ul>{["Agentic AI","Cloud & AI Cost Reduction","MLOps","AIRE","FDE Embeds","Automations & Integrations"].map(s => <li key={s}><a href="#services">{s}</a></li>)}</ul>
         </div>
         <div className="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#why-launchlayer">Why LaunchLayer</a></li>
-            <li><a href="#markets">Our Markets</a></li>
-            <li><a href="#use-cases">Case Studies</a></li>
-            <li><a href="#how-it-works">Our Process</a></li>
+            <li><a href="#capabilities">Capabilities</a></li>
+            <li><a href="#markets">Who we help</a></li>
+            <li><a href="#use-cases">Example outcomes</a></li>
+            <li><a href="#how-it-works">How we work</a></li>
             <li><a href="#pricing">Pricing</a></li>
           </ul>
         </div>
         <div className="footer-col">
           <h4>Contact</h4>
           <ul>
-            <li><a href="mailto:launchlayer.techh@gmail.com">launchlayer.techh@gmail.com</a></li>
-            <li><a href="https://wa.me/919831014716">WhatsApp India</a></li>
+            <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+            <li><a href={`https://wa.me/${WHATSAPP_NUMBER}`}>WhatsApp India</a></li>
+            <li><a href="https://www.linkedin.com/company/143744064/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
             <li><a href="#contact">Book a Call</a></li>
             <li>
-              <Link to="/blog" className="footer-link">Blog Agent</Link>
+              <Link to="/blog" className="footer-link">Blog</Link>
             </li>
           </ul>
         </div>
       </footer>
       <div className="footer-bottom">
-        <p>© 2026 LaunchLayer · "The AI Layer Your Business Was Missing."</p>
+        <p>© 2026 LaunchLayer · AI that ships. Spend that drops.</p>
         <span className="footer-serving">Serving India · UAE · UK · USA · Australia</span>
       </div>
+      <ChatBot />
     </>
   );
 }

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="LaunchLayer">
+  <defs>
+    <linearGradient id="blade" x1="64" y1="18" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffb84a"/>
+      <stop offset="100%" stop-color="#f5a623"/>
+    </linearGradient>
+    <radialGradient id="coreGlow" cx="64" cy="64" r="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00c9b1" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#00c9b1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Dark tile -->
+  <rect width="128" height="128" rx="28" fill="#0a0a0f"/>
+  <!-- Soft core aura -->
+  <circle cx="64" cy="64" r="18" fill="url(#coreGlow)"/>
+  <!-- Four radial blades (asterisk / multi-agent launch) -->
+  <g fill="url(#blade)">
+    <path d="M64 16 C70 28 72 42 68 54 C66 58 62 58 60 54 C56 42 58 28 64 16Z" opacity="0.95"/>
+    <path d="M112 64 C100 70 86 72 74 68 C70 66 70 62 74 60 C86 56 100 58 112 64Z" opacity="0.95"/>
+    <path d="M64 112 C58 100 56 86 60 74 C62 70 66 70 68 74 C72 86 70 100 64 112Z" opacity="0.95"/>
+    <path d="M16 64 C28 58 42 56 54 60 C58 62 58 66 54 68 C42 72 28 70 16 64Z" opacity="0.95"/>
+  </g>
+  <!-- Overlap accents for depth -->
+  <g fill="#ff7a1a" opacity="0.35">
+    <path d="M64 40 C67 48 67 54 64 58 C61 54 61 48 64 40Z"/>
+    <path d="M88 64 C80 67 74 67 70 64 C74 61 80 61 88 64Z"/>
+    <path d="M64 88 C61 80 61 74 64 70 C67 74 67 80 64 88Z"/>
+    <path d="M40 64 C48 61 54 61 58 64 C54 67 48 67 40 64Z"/>
+  </g>
+  <!-- Teal core node -->
+  <circle cx="64" cy="64" r="9" fill="#0a0a0f"/>
+  <circle cx="64" cy="64" r="7" fill="#00c9b1"/>
+  <circle cx="64" cy="64" r="3" fill="#0a0a0f"/>
+  <circle cx="64" cy="64" r="1.6" fill="#7ff5e6"/>
+</svg>

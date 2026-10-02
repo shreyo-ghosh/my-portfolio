@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LaunchLayer — Logo options</title>
+  <style>
+    :root { --bg:#0a0a0f; --card:#14141c; --border:rgba(255,255,255,.08); --amber:#f5a623; --teal:#00c9b1; --text:#e8e8f0; --muted:#7a7a9a; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--text); padding: 2.5rem 1.5rem 4rem; }
+    header { max-width: 1100px; margin: 0 auto 2rem; }
+    h1 { font-size: 1.75rem; letter-spacing: -0.03em; margin-bottom: .4rem; }
+    p { color: var(--muted); line-height: 1.5; max-width: 40rem; }
+    .grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+    a.card { display: block; background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: border-color .2s, transform .15s; }
+    a.card:hover { border-color: rgba(245,166,35,.45); transform: translateY(-3px); }
+    .preview { background: #fff; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+    .preview img { width: 100%; height: 100%; object-fit: contain; }
+    .meta { padding: 1rem 1.1rem 1.15rem; }
+    .num { color: var(--amber); font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .name { font-size: 1.05rem; font-weight: 700; margin: .25rem 0 .35rem; }
+    .desc { font-size: .82rem; color: var(--muted); line-height: 1.4; }
+    footer { max-width: 1100px; margin: 2rem auto 0; color: var(--muted); font-size: .85rem; }
+    footer code { color: var(--teal); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LaunchLayer logo options</h1>
+    <p>Click any card to open the full PNG. Reply in chat with the number you want (1–8).</p>
+  </header>
+  <div class="grid">
+    <a class="card" href="/brand/options/ll-opt-01-monogram-l.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-01-monogram-l.png" alt="Option 1" /></div>
+      <div class="meta"><div class="num">Option 1</div><div class="name">Monogram L</div><div class="desc">Abstract L planes · premium consultancy</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-02-hex-layers.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-02-hex-layers.png" alt="Option 2" /></div>
+      <div class="meta"><div class="num">Option 2</div><div class="name">Hex layers</div><div class="desc">Isometric plates · infra / MLOps</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-03-orbit-arcs.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-03-orbit-arcs.png" alt="Option 3" /></div>
+      <div class="meta"><div class="num">Option 3</div><div class="name">Orbit arcs</div><div class="desc">Concentric spiral · product / systems</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-04-signal-stack.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-04-signal-stack.png" alt="Option 4" /></div>
+      <div class="meta"><div class="num">Option 4</div><div class="name">Signal stack</div><div class="desc">Pillar + rising bars · growth / ROI</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-05-chevrons.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-05-chevrons.png" alt="Option 5" /></div>
+      <div class="meta"><div class="num">Option 5</div><div class="name">Dual chevrons</div><div class="desc">Interlocked arrows · launch / momentum</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-06-node-layers.png" target="_blank">
+      <div class="preview" style="background:#111"><img src="/brand/options/ll-opt-06-node-layers.png" alt="Option 6" /></div>
+      <div class="meta"><div class="num">Option 6</div><div class="name">Node layers</div><div class="desc">App-icon node · modern SaaS</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-07-prism.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-07-prism.png" alt="Option 7" /></div>
+      <div class="meta"><div class="num">Option 7</div><div class="name">Prism</div><div class="desc">Isometric cube · enterprise platform</div></div>
+    </a>
+    <a class="card" href="/brand/options/ll-opt-08-double-l.png" target="_blank">
+      <div class="preview"><img src="/brand/options/ll-opt-08-double-l.png" alt="Option 8" /></div>
+      <div class="meta"><div class="num">Option 8</div><div class="name">Double-L</div><div class="desc">Interlocked monogram · lettermark</div></div>
+    </a>
+  </div>
+  <footer>Local gallery · files also at <code>public/brand/options/</code></footer>
+</body>
+</html>
