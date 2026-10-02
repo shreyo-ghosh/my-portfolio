@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 128" fill="none" role="img" aria-label="LaunchLayer">
+  <defs>
+    <linearGradient id="b" x1="64" y1="18" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffb84a"/>
+      <stop offset="100%" stop-color="#f5a623"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark -->
+  <g transform="translate(4,4)">
+    <rect width="120" height="120" rx="26" fill="#0a0a0f"/>
+    <g fill="url(#b)" transform="translate(0,0) scale(0.9375)">
+      <path d="M64 16 C70 28 72 42 68 54 C66 58 62 58 60 54 C56 42 58 28 64 16Z"/>
+      <path d="M112 64 C100 70 86 72 74 68 C70 66 70 62 74 60 C86 56 100 58 112 64Z"/>
+      <path d="M64 112 C58 100 56 86 60 74 C62 70 66 70 68 74 C72 86 70 100 64 112Z"/>
+      <path d="M16 64 C28 58 42 56 54 60 C58 62 58 66 54 68 C42 72 28 70 16 64Z"/>
+    </g>
+    <circle cx="60" cy="60" r="8" fill="#0a0a0f"/>
+    <circle cx="60" cy="60" r="6.2" fill="#00c9b1"/>
+    <circle cx="60" cy="60" r="2.2" fill="#0a0a0f"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="148" y="72" font-family="Syne, Arial Black, Helvetica, sans-serif" font-size="44" font-weight="800" letter-spacing="-0.04em" fill="#ffffff">LaunchLayer</text>
+  <circle cx="448" cy="46" r="6" fill="#f5a623"/>
+  <text x="148" y="98" font-family="Instrument Sans, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="0.14em" fill="#7a7a9a">SHIP PRODUCTION AI</text>
+</svg>
