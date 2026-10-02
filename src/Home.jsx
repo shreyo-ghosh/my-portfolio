@@ -4,7 +4,7 @@ import ChatBot from "./ChatBot";
 
 /* ─── STYLES ─── */
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=Share+Tech+Mono&display=swap');
 
 :root{--bg:#0a0a0f;--bg2:#111118;--bg3:#181820;--border:rgba(255,255,255,.08);--amber:#f5a623;--amber2:#ff7a1a;--teal:#00c9b1;--text:#e8e8f0;--muted:#7a7a9a;--white:#ffffff}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -307,7 +307,91 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
   footer{grid-template-columns:1fr}
   .cta-box h2{font-size:1.8rem}
   .pricing-dual{flex-direction:column;gap:.2rem}
+  .hud-readout{font-size:.62rem;gap:.6rem}
 }
+
+/* ─── JARVIS HUD ─── */
+.hud-page{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hud-hex{position:absolute;inset:0;opacity:.28;background:
+  radial-gradient(ellipse at 50% 18%, transparent 10%, rgba(10,10,15,.55) 72%),
+  repeating-linear-gradient(0deg, transparent 0 22px, rgba(0,201,177,.07) 22px 23px),
+  repeating-linear-gradient(60deg, transparent 0 22px, rgba(0,201,177,.07) 22px 23px),
+  repeating-linear-gradient(120deg, transparent 0 22px, rgba(245,166,35,.05) 22px 23px)}
+.hud-bloom{position:absolute;width:52vw;height:52vw;left:24vw;top:8vh;background:radial-gradient(circle, rgba(0,201,177,.16), transparent 68%);filter:blur(8px);transform:translate(calc(var(--hud-x, 0) * 36px), calc(var(--hud-y, 0) * 28px));transition:transform .35s ease-out}
+.hud-floor{position:absolute;left:-8%;right:-8%;bottom:-6%;height:42%;opacity:.22;background:
+  linear-gradient(to top, rgba(0,0,0,.8), transparent 70%),
+  repeating-linear-gradient(to right, rgba(0,201,177,.45) 0 1px, transparent 1px 48px),
+  repeating-linear-gradient(to bottom, rgba(0,201,177,.35) 0 1px, transparent 1px 36px);
+  transform:perspective(520px) rotateX(64deg);transform-origin:center bottom}
+.hud-scan{position:absolute;left:0;right:0;height:140px;background:linear-gradient(to bottom, transparent, rgba(0,201,177,.09), transparent);animation:hudSweep 8.5s linear infinite}
+.hud-frame{position:absolute;width:54px;height:54px;border:2px solid rgba(0,201,177,.7);z-index:2}
+.hud-frame.tl{top:86px;left:18px;border-right:0;border-bottom:0}
+.hud-frame.tr{top:86px;right:18px;border-left:0;border-bottom:0}
+.hud-frame.bl{bottom:14px;left:14px;border-right:0;border-top:0}
+.hud-frame.br{bottom:14px;right:14px;border-left:0;border-top:0}
+.hero{flex-direction:column}
+.hero-stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.hud-reactor{position:absolute;z-index:2;width:168px;height:168px;right:36px;top:34%;margin-top:-84px;transform:translate(calc(var(--hud-x, 0) * -14px), calc(var(--hud-y, 0) * -10px));transition:transform .35s ease-out}
+.hud-verb{position:absolute;z-index:2;right:36px;top:calc(34% + 92px);width:168px;margin:0;text-align:center}
+.hud-orb{width:100%;height:100%}
+.hud-track{fill:none;stroke:#00c9b1;stroke-width:1.2;opacity:.55}
+.hud-track.thin{stroke-width:.7;opacity:.35}
+.hud-track.dash{stroke-dasharray:8 10}
+.hud-ticks line{stroke:#7aefff;stroke-width:1.4}
+.spin-slow{transform-origin:200px 200px;transform-box:view-box;animation:spin 26s linear infinite}
+.spin-rev{transform-origin:200px 200px;transform-box:view-box;animation:spin 14s linear infinite reverse}
+.hud-reactor.awake .spin-slow,.hud-reactor.awake .spin-rev{animation-duration:2.2s}
+.hud-core{position:absolute;inset:31%;border-radius:50%;background:radial-gradient(circle at 38% 32%, #fff 0%, #b8f7ff 16%, #00c9b1 46%, #043a4c 100%);box-shadow:0 0 42px rgba(0,201,177,.75), inset 0 0 16px #fff}
+.hud-reactor.awake .hud-core{box-shadow:0 0 70px rgba(245,166,35,.85), inset 0 0 16px #fff}
+.hud-iris{position:absolute;inset:30%;border-radius:50%;background:#01060a;box-shadow:inset 0 0 14px #00c9b1}
+.hud-verb{font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);text-shadow:0 0 12px rgba(245,166,35,.45)}
+.hud-readout{position:relative;z-index:2;display:flex;justify-content:center;gap:1.4rem;flex-wrap:wrap;margin-top:1.6rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.14em;color:#7aefff}
+.hud-readout span{display:inline-flex;align-items:center;gap:.45rem}
+.hud-live{width:7px;height:7px;border-radius:50%;background:#5ee0a8;box-shadow:0 0 10px #5ee0a8;animation:pulse 2s infinite}
+section,.stats-bar,.stats-note,footer,.footer-bottom{position:relative;z-index:1;background:transparent}
+.brand-section,.services-section,.industries-section,.tools-section,.contact-section,.cta-section,
+.market-section,.cap-section,.usecase-section,.hiw-section,.pricing-section,.problem-section,.stats-bar,.stats-note,footer,.footer-bottom{background:transparent}
+.brand-card,.cap-card,.service-card,.problem-card,.industry-card,.pricing-card,.usecase-card,.market-card,.hiw-step,.tool-pill,.lead-card{transition:border-color .2s, transform .2s, box-shadow .25s, background .25s}
+.brand-card:hover,.cap-card:hover,.service-card:hover,.problem-card:hover,.industry-card:hover,.pricing-card:hover,.usecase-card:hover,.market-card:hover,.hiw-step:hover,.tool-pill:hover,.lead-card:hover{box-shadow:0 0 28px rgba(0,201,177,.14), inset 0 0 28px rgba(0,201,177,.05)}
+@keyframes hudSweep{0%{top:-20%}100%{top:110%}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){
+  .hud-reactor{position:relative;right:auto;top:auto;margin:0 auto .4rem;width:120px;height:120px;transform:none}
+  .hud-verb{position:relative;right:auto;top:auto;width:auto;margin:0 0 .8rem}
+  .hud-frame{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .hud-scan,.spin-slow,.spin-rev,.hud-live,.nav-logo .dot{animation:none}
+  .hud-bloom,.hud-reactor{transform:none}
+}
+
+/* ─── ONE CANVAS + QUIET TYPE ─── */
+body{background:#070b10;font-size:15px}
+nav{background:rgba(7,11,16,.55);border-bottom:1px solid rgba(140,210,220,.14)}
+.hero-grid-bg{display:none}
+.hero{padding:6.25rem 5vw 2.75rem;min-height:88vh}
+.hero-content{max-width:38rem}
+.hero h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.15rem,3.3vw,3.05rem);line-height:1.08;letter-spacing:-.02em}
+.hero-sub{font-size:.98rem;max-width:34rem;margin:1rem auto 1.5rem;line-height:1.65}
+.section-tag,.cap-kicker,.uc-label,.footer-col h4,.form-group label,.brand-word-meaning,.market-card-label{font-family:"Share Tech Mono",ui-monospace,monospace;font-weight:400;letter-spacing:.14em;font-size:.68rem}
+h2.section-title,.section-title,.brand-hero-line,.contact-info h3,.cta-box h2,.footer-brand h3,.nav-logo,.brand-word,.stat-num,.price-usd,.price-inr,.market-card-title,.cap-card h3,.service-card h3,.problem-card h4,.industry-card h4,.hiw-step h3,.usecase-header h3,.lead-card h4,.pricing-card h3,.form-success h4{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:-.02em}
+.section-title{font-size:clamp(1.5rem,2vw,1.9rem);line-height:1.2;max-width:16em}
+.section-body{font-size:.96rem;line-height:1.65}
+.brand-hero-line{font-size:clamp(1.3rem,1.8vw,1.65rem);line-height:1.3;max-width:22em}
+.brand-word{font-size:1.65rem}
+.stat-num{font-size:1.55rem}
+.stat-item{padding:1.35rem 1rem}
+section{padding:4rem 5vw}
+.cta-section{padding:4rem 5vw}
+.cta-box{padding:2.4rem 2rem}
+.cta-box h2{font-size:1.75rem}
+.contact-info h3{font-size:1.45rem}
+.price-usd{font-size:1.75rem}
+.nav-logo{font-size:1.2rem}
+.services-grid{background:transparent;border:none;gap:.9rem;overflow:visible}
+.brand-card,.cap-card,.problem-card,.industry-card,.pricing-card,.usecase-card,.hiw-step,.lead-card,.contact-form,.service-card,.tool-pill,.cta-box{background:rgba(8,16,24,.46);backdrop-filter:blur(14px);border:1px solid rgba(140,210,220,.16)}
+.pricing-card.featured{background:rgba(8,16,24,.62);border-color:rgba(245,166,35,.45)}
+.usecase-header{background:transparent}
 `;
 
 /* ─── DATA ─── */
@@ -384,12 +468,42 @@ export default function Home() {
     process: "",
   });
 
+  const [clock, setClock] = useState("--:--:--");
+  const [coreAwake, setCoreAwake] = useState(false);
+
   useEffect(() => {
-    const style = document.createElement("style");
-    style.id = "ll-home-css";
+    let style = document.getElementById("ll-home-css");
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "ll-home-css";
+      document.head.appendChild(style);
+    }
     style.textContent = CSS;
-    document.head.appendChild(style);
-    return () => { const s = document.getElementById("ll-home-css"); if (s) s.remove(); };
+  });
+
+  useEffect(() => {
+    const tick = () => {
+      setClock(new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }).format(new Date()));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    const onMove = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      document.documentElement.style.setProperty("--hud-x", x.toFixed(3));
+      document.documentElement.style.setProperty("--hud-y", y.toFixed(3));
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("pointermove", onMove);
+    };
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
@@ -480,8 +594,14 @@ export default function Home() {
 
   const mkt = MKT_COPY[market];
 
+  const ticks = Array.from({ length: 36 }, (_, i) => i * 10);
+
   return (
     <>
+      <div className="hud-page" aria-hidden="true">
+        <div className="hud-hex" />
+        <div className="hud-bloom" />
+      </div>
       {/* NAV */}
       <nav>
         <a href="/" className="nav-logo">
@@ -512,9 +632,34 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section className="hero">
+      <section
+        className="hero"
+        onMouseEnter={() => setCoreAwake(true)}
+        onMouseLeave={() => setCoreAwake(false)}
+      >
+        <div className="hud-floor" aria-hidden="true" />
+        <div className="hud-scan" aria-hidden="true" />
+        <span className="hud-frame tl" aria-hidden="true" />
+        <span className="hud-frame tr" aria-hidden="true" />
+        <span className="hud-frame bl" aria-hidden="true" />
+        <span className="hud-frame br" aria-hidden="true" />
         <div className="hero-grid-bg" />
         <div className="hero-glow" />
+        <div className={`hud-reactor ${coreAwake ? "awake" : ""}`} aria-hidden="true">
+            <svg className="hud-orb" viewBox="0 0 400 400">
+              <circle className="hud-track" cx="200" cy="200" r="188" />
+              <circle className="hud-track dash spin-slow" cx="200" cy="200" r="168" />
+              <circle className="hud-track thin spin-rev" cx="200" cy="200" r="148" />
+              <g className="hud-ticks spin-slow">
+                {ticks.map((angle) => (
+                  <line key={angle} x1="200" y1="16" x2="200" y2="30" transform={`rotate(${angle} 200 200)`} />
+                ))}
+              </g>
+            </svg>
+            <div className="hud-core"><span className="hud-iris" /></div>
+          </div>
+        <p className="hud-verb">{coreAwake ? "Systems tracking · ready to ship" : "Online · waiting for a signal"}</p>
+        <div className="hero-stage">
         <div className="hero-content">
           <div className="mkt-toggle" role="group" aria-label="Market focus">
             {[["both","All Markets"],["india","India"],["global","Global"]].map(([id,label]) => (
@@ -533,6 +678,12 @@ export default function Home() {
               <span key={c}><span className="mkt-dot" />{c}</span>
             ))}
           </div>
+        </div>
+        </div>
+        <div className="hud-readout">
+          <span><i className="hud-live" /> Sys online</span>
+          <span>IST {clock}</span>
+          <span>{coreAwake ? "Tracking pointer" : "Layer active"}</span>
         </div>
       </section>
 

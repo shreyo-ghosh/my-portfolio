@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ─── STYLES ─── */
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Instrument+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Instrument+Sans:wght@400;500;600&display=swap');
 
 .ll-chat-widget { position:fixed; bottom:28px; right:28px; z-index:9999; font-family:'Instrument Sans',sans-serif; }
 .ll-launcher {
@@ -27,7 +27,8 @@ const CSS = `
 .ll-panel {
   position:absolute; bottom:76px; right:0;
   width:380px; height:580px;
-  background:#0f0f17; border:1px solid rgba(255,255,255,.08);
+  background:rgba(8,14,20,.92); border:1px solid rgba(140,210,220,.18);
+  backdrop-filter:blur(16px);
   border-radius:20px; overflow:hidden;
   display:flex; flex-direction:column;
   box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(245,166,35,.08);
@@ -49,7 +50,7 @@ const CSS = `
   display:flex; align-items:center; justify-content:center; font-size:18px;
 }
 .ll-header-info { flex:1; min-width:0; }
-.ll-header-name { font-family:'Syne',sans-serif; font-size:.95rem; font-weight:700; color:#fff; }
+.ll-header-name { font-family:'Instrument Serif',Georgia,serif; font-size:1.05rem; font-weight:400; color:#fff; }
 .ll-header-status { font-size:.72rem; color:#00c9b1; display:flex; align-items:center; gap:5px; margin-top:2px; }
 .ll-status-dot { width:6px; height:6px; background:#00c9b1; border-radius:50%; animation:llPulse 2s infinite; }
 @keyframes llPulse { 0%,100%{opacity:1} 50%{opacity:.4} }
@@ -93,13 +94,13 @@ const CSS = `
 .ll-dot:nth-child(3) { animation-delay:.4s; }
 @keyframes llTyping { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-5px);opacity:1} }
 .ll-card { background:rgba(245,166,35,.06); border:1px solid rgba(245,166,35,.2); border-radius:12px; padding:12px 14px; margin-top:6px; }
-.ll-card-title { font-family:'Syne',sans-serif; font-size:.85rem; font-weight:700; color:#f5a623; margin-bottom:6px; }
+.ll-card-title { font-family:'Instrument Serif',Georgia,serif; font-size:.95rem; font-weight:400; color:#f5a623; margin-bottom:6px; }
 .ll-card-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px solid rgba(255,255,255,.05); font-size:.78rem; gap:8px; }
 .ll-card-row:last-child { border-bottom:none; }
 .ll-card-row span:first-child { color:#9a9ab8; }
 .ll-card-row span:last-child { color:#e8e8f0; font-weight:500; text-align:right; }
 .ll-price-card { background:rgba(0,201,177,.06); border:1px solid rgba(0,201,177,.2); border-radius:12px; padding:12px 14px; margin-top:6px; }
-.ll-price-big { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; color:#00c9b1; }
+.ll-price-big { font-family:'Instrument Serif',Georgia,serif; font-size:1.35rem; font-weight:400; color:#00c9b1; }
 .ll-check-list { margin-top:8px; display:flex; flex-direction:column; gap:4px; }
 .ll-check-item { font-size:.76rem; color:#9a9ab8; display:flex; align-items:flex-start; gap:6px; }
 .ll-check-item::before { content:'✓'; color:#00c9b1; font-weight:700; flex-shrink:0; }
@@ -194,87 +195,86 @@ function buildMsg(content, isBot = true, chips = [], type = "text") {
   return { id: Date.now() + Math.random(), content, isBot, chips, type, time: getTime() };
 }
 
-const RULES = [
-  {
-    match: /\b(hi|hello|hey|hiya|start|begin)\b/i,
-    respond: () => ({
-      text: `Hey! I'm **Laya**, LaunchLayer's front-desk assistant.\n\nI can answer questions — and when you're ready, I'll **capture your details and hand you to ${JARVIS_NAME}**, our delivery agent.\n\nWhat do you need?`,
-      chips: ["🔧 Capabilities", "💰 Pricing", "📞 Talk to Jarvis", "💸 Cut cloud/AI costs"],
-    }),
-  },
-  {
-    match: /\b(service|capabilit|what.*(you|we) do|offer|agentic|mlops|aire|fde|automation)\b/i,
-    respond: () => ({
-      text: `We ship the **AI layer** — not demos:`,
-      card: "services",
-      chips: ["💰 Pricing", "📞 Talk to Jarvis", "💸 Cost reduction", "⚙️ How it works"],
-    }),
-  },
-  {
-    match: /\b(price|pricing|cost|how much|rate|₹|inr|usd)\b/i,
-    respond: () => ({
-      text: `Simple plans — no lock-in:`,
-      card: "pricing",
-      chips: ["📞 Talk to Jarvis", "🔧 Capabilities", "💸 Cost snapshot"],
-    }),
-  },
-  {
-    match: /\b(cost|finops|bill|aws|gcp|azure|llm|openai|waste|saving)\b/i,
-    respond: () => ({
-      text: `**Cloud & AI Cost Reduction** finds waste in infra and LLM usage — right-sizing, caching, cheaper-model routing, and alerts.\n\nTypical first cuts land in **2 weeks**. Want a free **Cloud & AI Cost Snapshot**? I'll hand you to **${JARVIS_NAME}**.`,
-      chips: ["📞 Talk to Jarvis", "💰 Pricing", "🔧 Capabilities"],
-    }),
-  },
-  {
-    match: /\b(mlops|pilot|poc|production|prod|aire|reliable|eval)\b/i,
-    respond: () => ({
-      text: `Stuck pilot? We use **MLOps + AIRE** (AI Reliability Engineering) so demos become monitored production services — evals, guardrails, rollback.\n\n**FDEs** embed and ship in your stack. Ready for ${JARVIS_NAME}?`,
-      chips: ["📞 Talk to Jarvis", "🔧 Capabilities", "💰 Pricing"],
-    }),
-  },
-  {
-    match: /\b(how.*(work|process)|process|timeline|fde|embed)\b/i,
-    respond: () => ({
-      text: `**01 — Free audit** (30 mins)\nMap workflows, spend, and pilot risk.\n\n**02 — FDE embeds & ships** (1–3 weeks)\nWorking agents/pipelines in your environment.\n\n**03 — MLOps + AIRE**\nKeep it reliable and the bill sane.\n\nI can hand your case to **${JARVIS_NAME}** now.`,
-      chips: ["📞 Talk to Jarvis", "💰 Pricing"],
-    }),
-  },
-  {
-    match: /\b(book|audit|jarvis|handoff|hand over|talk|consult|schedule|demo|call|contact|snapshot)\b/i,
-    respond: () => ({
-      text: `Perfect — I'll take your details and **hand you to ${JARVIS_NAME}**.\n\n${JARVIS_NAME} gets your context so the next step is a real consult, not a cold pitch.`,
-      form: true,
-      chips: ["💬 WhatsApp instead", "✉️ Email instead"],
-    }),
-  },
-  {
-    match: /\b(thank|thanks|great|awesome|helpful)\b/i,
-    respond: () => ({
-      text: `Glad that helped. When you're ready, say **Talk to Jarvis** and I'll capture your details for handoff.`,
-      chips: ["📞 Talk to Jarvis", "🔧 Capabilities", "💰 Pricing"],
-    }),
-  },
-];
-
-const FALLBACK = () => ({
-  text: `I can help with capabilities, pricing, cost reduction, or connecting you to **${JARVIS_NAME}**.`,
-  chips: ["🔧 Capabilities", "💰 Pricing", "📞 Talk to Jarvis", "💸 Cut cloud/AI costs"],
-});
-
-function getResponse(input) {
-  const trimmed = input.trim().toLowerCase();
-  for (const rule of RULES) {
-    if (rule.match.test(trimmed)) return rule.respond();
-  }
-  return FALLBACK();
-}
+const EMAIL_RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
+const DISCOVER_CHIPS = ["Cloud bill is too high", "Pilot stuck in demo", "We need agents", "Show pricing"];
 
 const WELCOME = {
-  text: `Hi — I'm **Laya** 👋\n\nI qualify leads for LaunchLayer, then **hand you to ${JARVIS_NAME}** (our agent) with your details filled in.\n\nWhat brings you in?`,
-  chips: ["🔧 Capabilities", "💰 Pricing", "📞 Talk to Jarvis", "💸 Cut cloud/AI costs"],
+  text: `Hi — I'm **Laya**.\n\nTell me what's stuck, and I'll get the useful part on the table before I ask for a way to follow up.`,
+  chips: DISCOVER_CHIPS,
 };
 
-async function handoffToJarvis({ lead, conversation }) {
+function inferNeed(text) {
+  const t = text.toLowerCase();
+  if (/\b(bill|aws|gcp|azure|llm|openai|finops|waste|saving|cost snapshot)\b/.test(t)) return "Free Cloud & AI Cost Snapshot";
+  if (/\b(pilot|poc|mlops|prod|aire|eval|demo)\b/.test(t)) return "MLOps / productionise a pilot";
+  if (/\b(fde|embed)\b/.test(t)) return "FDE embed";
+  if (/\b(agent|automat|busy|workflow|whatsapp)\b/.test(t)) return "Agentic AI / automation";
+  if (/\b(price|pricing|rate|plan)\b/.test(t)) return "Pricing — wants a consult";
+  if (/\baudit\b/.test(t)) return "Free AI Opportunity Audit";
+  return "";
+}
+
+function answerTopic(text) {
+  const t = text.toLowerCase();
+  if (/^(hi|hello|hey|hiya)\b/.test(t) && t.split(/\s+/).length < 5) {
+    return {
+      text: `Good to meet you. What's the expensive or stuck part — a cloud bill, a pilot, or work the team still does by hand?`,
+      chips: DISCOVER_CHIPS,
+      qualify: false,
+    };
+  }
+  if (/\b(price|pricing|how much|rate|plan)\b/.test(t)) {
+    return {
+      text: `Three ways in, no lock-in. Most teams start with the free audit, then Growth if they want a reserved engineer.`,
+      card: "pricing",
+      qualify: true,
+    };
+  }
+  if (/\b(capabilit|service|what.*(you|we) do|offer)\b/.test(t) && !inferNeed(t)) {
+    return {
+      text: `We ship the layer around the model: agents that do the work, production discipline, and a bill someone owns.`,
+      card: "services",
+      qualify: true,
+    };
+  }
+  if (/\b(bill|aws|gcp|azure|llm|finops|waste|saving)\b/.test(t)) {
+    return {
+      text: `A cost snapshot looks at idle infra and unrouted model calls. First cuts are usually in about two weeks, and we confirm the number against your bill before anyone builds.`,
+      qualify: true,
+    };
+  }
+  if (/\b(pilot|poc|mlops|aire|eval|demo|production)\b/.test(t)) {
+    return {
+      text: `A pilot that dies on real users usually needs evals, a rollback, and someone in the repo — not another slide. That's the MLOps + AIRE embed.`,
+      qualify: true,
+    };
+  }
+  if (/\b(how.*(work|process)|timeline|process)\b/.test(t)) {
+    return {
+      text: `Thirty-minute audit, then an engineer in your stack for one to three weeks, then monitoring so it stays up and the bill stays honest.`,
+      qualify: true,
+    };
+  }
+  if (/\b(agent|automat|busy|workflow)\b/.test(t)) {
+    return {
+      text: `We put an agent on the repetitive job — mail, POs, leads, support — and leave a human on the exceptions. That's usually the first thing that pays for itself.`,
+      qualify: true,
+    };
+  }
+  if (/\b(thank|thanks|great|perfect)\b/.test(t)) {
+    return {
+      text: `Glad that was useful. If you want a human to pick this up, I only need a name and an email.`,
+      qualify: true,
+    };
+  }
+  return {
+    text: `I can talk through a cloud bill, a stuck pilot, agents for busywork, or pricing. What should we start with?`,
+    chips: DISCOVER_CHIPS,
+    qualify: false,
+  };
+}
+
+function handoffToJarvis({ lead, conversation }) {
   const payload = {
     agent: JARVIS_NAME,
     source: "launchlayer.in chatbot",
@@ -304,27 +304,27 @@ async function handoffToJarvis({ lead, conversation }) {
     .filter(Boolean)
     .join("\n");
 
-  let webhookOk = false;
-  if (JARVIS_WEBHOOK) {
-    try {
-      const res = await fetch(JARVIS_WEBHOOK, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
-      });
-      webhookOk = res.ok;
-    } catch {
-      webhookOk = false;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const mailUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`LaunchLayer lead — ${lead.name}`)}&body=${encodeURIComponent(message)}`;
+
+  const sent = (async () => {
+    let webhookOk = false;
+    if (JARVIS_WEBHOOK) {
+      try {
+        const res = await fetch(JARVIS_WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        });
+        webhookOk = res.ok;
+      } catch {
+        webhookOk = false;
+      }
     }
-  }
+    return { webhookOk, waUrl, mailUrl, payload };
+  })();
 
-  // Always open WhatsApp as operator/Jarvis inbox fallback when webhook missing or failed
-  if (!JARVIS_WEBHOOK || !webhookOk) {
-    const wa = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(wa, "_blank", "noopener,noreferrer");
-  }
-
-  return { webhookOk, usedWhatsApp: !JARVIS_WEBHOOK || !webhookOk, payload };
+  return { waUrl, mailUrl, sent };
 }
 
 export default function ChatBot() {
@@ -348,6 +348,9 @@ export default function ChatBot() {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const messagesRef = useRef([]);
+  const stageRef = useRef("discover");
+  const leadRef = useRef({ name: "", email: "", company: "", phone: "", need: "", notes: "" });
+  const [handoffLinks, setHandoffLinks] = useState(null);
 
   useEffect(() => {
     const el = document.createElement("style");
@@ -381,8 +384,47 @@ export default function ChatBot() {
     setChips(nextChips);
   }, []);
 
-  const sendMessage = useCallback((text) => {
-    if (!text.trim() || formSending) return;
+  const replyWith = useCallback((response) => {
+    const botMsg = buildMsg(response.text, true, response.chips || [], response.card || "text");
+    setMessages((prev) => {
+      const next = [...prev, botMsg];
+      messagesRef.current = next;
+      return next;
+    });
+    setChips(response.chips || []);
+    if (response.links) setHandoffLinks(response.links);
+  }, []);
+
+  const completeLead = useCallback(async (lead, openWhatsApp) => {
+    const draft = handoffToJarvis({
+      lead,
+      conversation: messagesRef.current,
+    });
+    let popup = null;
+    if (openWhatsApp && !JARVIS_WEBHOOK) {
+      popup = window.open(draft.waUrl, "_blank", "noopener,noreferrer");
+    }
+    const result = await draft.sent;
+    stageRef.current = "done";
+    setFormSent(true);
+    setFormActive(false);
+    if (!result.webhookOk && openWhatsApp && !popup) {
+      setHandoffLinks({ waUrl: result.waUrl, mailUrl: result.mailUrl });
+    }
+    const channel = result.webhookOk
+      ? `${JARVIS_NAME} has the lead. We'll reply within **24 hours**.`
+      : `I opened WhatsApp with your details. Send that message and **${JARVIS_NAME}** will pick it up within **24 hours**.`;
+    replyWith({
+      text: `Got it, **${lead.name}**.\n\nNeed: **${lead.need || "Consult"}**${lead.company ? `\nCompany: **${lead.company}**` : ""}\nEmail: **${lead.email}**\n\n${channel}`,
+      card: "handoff",
+      chips: [],
+      links: result.webhookOk ? null : { waUrl: result.waUrl, mailUrl: result.mailUrl },
+    });
+  }, [replyWith]);
+
+  const sendMessage = useCallback((raw) => {
+    const text = raw.trim();
+    if (!text || formSending || stageRef.current === "done") return;
     const userMsg = buildMsg(text, false);
     setMessages((prev) => {
       const next = [...prev, userMsg];
@@ -393,71 +435,127 @@ export default function ChatBot() {
     setChips([]);
     setTyping(true);
 
-    if (/whatsapp/i.test(text)) {
-      setTimeout(() => {
-        setTyping(false);
-        pushBot(`WhatsApp us anytime:\n\n**+91 98310 14716**\n\nOr fill the form and I'll hand off to **${JARVIS_NAME}**.`, ["📞 Talk to Jarvis", "🔧 Capabilities"]);
-      }, 700);
-      return;
+    const lead = leadRef.current;
+    const stage = stageRef.current;
+    const foundEmail = text.match(EMAIL_RE)?.[0];
+    if (foundEmail) lead.email = foundEmail;
+    const guessed = inferNeed(text);
+    if (guessed) lead.need = guessed;
+
+    const wantsForm = /form/i.test(text);
+    const wantsPerson = /\b(book|audit|jarvis|handoff|hand over|talk|consult|schedule|call|contact)\b/i.test(text);
+
+    let finishing = null;
+    if (stage === "context" && !wantsForm) {
+      lead.notes = text;
+      if (!lead.need) lead.need = inferNeed(text) || "Free AI Opportunity Audit";
+      finishing = handoffToJarvis({ lead: { ...lead }, conversation: messagesRef.current });
+      if (!JARVIS_WEBHOOK) finishing.popup = window.open(finishing.waUrl, "_blank", "noopener,noreferrer");
     }
 
-    if (/email/i.test(text) && /instead|us|mail/i.test(text)) {
-      setTimeout(() => {
-        setTyping(false);
-        pushBot(`Email: **${CONTACT_EMAIL}**\n\nOr capture details here for a **${JARVIS_NAME}** handoff.`, ["📞 Talk to Jarvis"]);
-      }, 700);
-      return;
-    }
-
-    const cleanText = text.replace(/^[^\w₹$]+/, "").trim();
-    const response = getResponse(cleanText || text);
-    const delay = 700 + Math.random() * 500;
-
-    setTimeout(() => {
+    window.setTimeout(() => {
       setTyping(false);
-      const botMsg = buildMsg(response.text, true, response.chips || [], response.card || "text");
-      setMessages((prev) => {
-        const next = [...prev, botMsg];
-        messagesRef.current = next;
-        return next;
-      });
-      setChips(response.chips || []);
-      if (response.form && !formSent) setFormActive(true);
-    }, delay);
-  }, [formSending, formSent, pushBot]);
+      if (finishing) {
+        finishing.sent.then((result) => {
+          stageRef.current = "done";
+          setFormSent(true);
+          setFormActive(false);
+          const channel = result.webhookOk
+            ? `${JARVIS_NAME} has the lead. We'll reply within **24 hours**.`
+            : `WhatsApp has your details ready. Send that message and **${JARVIS_NAME}** follows up within **24 hours**.`;
+          replyWith({
+            text: `Got it, **${lead.name}**.\n\nNeed: **${lead.need}**${lead.company ? `\nCompany: **${lead.company}**` : ""}\nEmail: **${lead.email}**\n\n${channel}`,
+            card: "handoff",
+            chips: [],
+            links: result.webhookOk ? null : { waUrl: result.waUrl, mailUrl: result.mailUrl },
+          });
+        });
+        return;
+      }
+      if (wantsForm && stage !== "done") {
+        setFormActive(true);
+        replyWith({ text: "Use the short form. I'll send it as soon as you submit.", chips: [] });
+        return;
+      }
+      if (stage === "name") {
+        const name = text.replace(/^(i'm|i am|my name is|it's|it is)\s+/i, "").trim();
+        if (name.length < 2 || EMAIL_RE.test(name)) {
+          replyWith({ text: "What name should I put on the intro?", chips: [] });
+          return;
+        }
+        lead.name = name.split(/\s+/).slice(0, 4).join(" ");
+        stageRef.current = lead.email ? "company" : "email";
+        replyWith(lead.email
+          ? { text: `Thanks **${lead.name}**. I have **${lead.email}**. Company name, or say **skip**.`, chips: ["Skip"] }
+          : { text: `Thanks **${lead.name}**. What's the best work email for the follow-up?`, chips: [] });
+        return;
+      }
+      if (stage === "email") {
+        if (!lead.email) {
+          replyWith({ text: "I need an email that looks like name@company.com.", chips: [] });
+          return;
+        }
+        stageRef.current = "company";
+        replyWith({ text: "Company? Say **skip** if you're looking on your own.", chips: ["Skip"] });
+        return;
+      }
+      if (stage === "company") {
+        if (!/^skip$/i.test(text)) lead.company = text;
+        stageRef.current = "context";
+        replyWith({
+          text: "Last one. In a sentence, what's expensive, manual, or stuck?",
+          chips: ["Cloud bill", "Stuck pilot", "Manual busywork"],
+        });
+        return;
+      }
+      if (stage === "context") return;
+
+      if (wantsForm) {
+        setFormActive(true);
+        replyWith({ text: "Use the short form and I'll send it the moment you submit.", chips: [] });
+        return;
+      }
+
+      if (/whatsapp/i.test(text)) {
+        replyWith({
+          text: `WhatsApp is **+91 98310 14716**. Or keep going here and I'll package a proper intro for **${JARVIS_NAME}**.`,
+          chips: ["Start the intro"],
+        });
+        return;
+      }
+
+      const topic = answerTopic(text);
+      const ready = topic.qualify || wantsPerson || text === "Start the intro";
+      if (ready && !formSent) {
+        stageRef.current = lead.name ? (lead.email ? "company" : "email") : "name";
+        const ask = stageRef.current === "name"
+          ? `What name should I use for the intro to **${JARVIS_NAME}**?`
+          : stageRef.current === "email"
+            ? `I have your name. What's the work email?`
+            : `Company, or say **skip**.`;
+        replyWith({
+          text: `${topic.text}\n\n${ask}`,
+          card: topic.card,
+          chips: stageRef.current === "company" ? ["Skip"] : ["Use a short form"],
+        });
+        return;
+      }
+      replyWith(topic);
+    }, 650);
+  }, [completeLead, formSending, formSent, replyWith]);
 
   const handleFormSubmit = async () => {
     if (!formData.name.trim() || !formData.email.trim() || formSending) return;
+    if (!EMAIL_RE.test(formData.email)) return;
     setFormSending(true);
+    leadRef.current = { ...leadRef.current, ...formData };
     try {
-      const result = await handoffToJarvis({
-        lead: { ...formData },
-        conversation: messagesRef.current,
-      });
-      setFormSent(true);
-      setFormActive(false);
-      const via = result.webhookOk
-        ? `webhook → **${JARVIS_NAME}**`
-        : `WhatsApp handoff → **${JARVIS_NAME}**`;
-      pushBot(
-        `Thanks **${formData.name}** — you're handed to **${JARVIS_NAME}**. ✅\n\nDelivery via ${via}. Expect a reply within **24 hours**.\n\n<div class="ll-handoff"></div>`,
-        ["🔧 Capabilities", "💰 Pricing"]
-      );
-      // Replace with cleaner message without fake HTML
-      setMessages((prev) => {
-        const cleaned = [...prev];
-        cleaned[cleaned.length - 1] = buildMsg(
-          `Thanks **${formData.name}** — handed to **${JARVIS_NAME}**. ✅\n\nChannel: ${result.webhookOk ? "Jarvis webhook" : "WhatsApp (Jarvis inbox)"}.\nWe'll follow up within **24 hours** with next steps.`,
-          true,
-          ["🔧 Capabilities", "💰 Pricing"],
-          "handoff"
-        );
-        messagesRef.current = cleaned;
-        return cleaned;
-      });
-      setChips(["🔧 Capabilities", "💰 Pricing"]);
+      await completeLead({ ...leadRef.current }, true);
     } catch {
-      pushBot(`Something went wrong sending to ${JARVIS_NAME}. Email us at **${CONTACT_EMAIL}** or WhatsApp **+91 98310 14716**.`, ["💬 WhatsApp instead"]);
+      replyWith({
+        text: `I couldn't send that. Email **${CONTACT_EMAIL}** or WhatsApp **+91 98310 14716**.`,
+        chips: [],
+      });
     } finally {
       setFormSending(false);
     }
@@ -595,6 +693,13 @@ export default function ChatBot() {
 
             <div ref={messagesEndRef} />
           </div>
+
+          {handoffLinks && (
+            <div className="ll-chips">
+              <a className="ll-cta-btn" href={handoffLinks.waUrl} target="_blank" rel="noopener noreferrer">Send on WhatsApp</a>
+              <a className="ll-cta-btn" href={handoffLinks.mailUrl}>Email instead</a>
+            </div>
+          )}
 
           {chips.length > 0 && !formActive && (
             <div className="ll-chips">
